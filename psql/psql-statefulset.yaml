@@ -1,0 +1,37 @@
+# PostgreSQL StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-db
+spec:
+  serviceName: postgresql-db-service
+  selector:
+    matchLabels:
+      app: postgresql-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql-db
+    spec:
+      containers:
+        - name: postgresql-db
+          image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.1
+          volumeMounts:
+          - name: postgresql-db-disk
+            mountPath: /data
+          resources:
+            limits:
+              cpu: "500m" # or 0.5 vCPU
+              memory: "1Gi"
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+  volumeClaimTemplates:
+  - metadata:
+      name: postgresql-db-disk
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi
