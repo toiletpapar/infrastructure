@@ -1,14 +1,17 @@
 # Infrastructure
-* Infrastructure backing the smithers application
+Infrastructure backing the Smithers application
+
+Please see https://github.com/toiletpapar/infrastructure/blob/main/requirements.md for details on how you can set this up yourself
 
 Done:
 * Manually start autopilot gke (autopilot-cluster-smithers)
 * Deploy postgres
 * Change secret to service name
-
-Next:
 * Automate Let's Encrypt
 * Deploy smither's servers
+
+Next:
+* Modify psql image for seeding
 
 Limitations:
 * Single node psql server, no replication
