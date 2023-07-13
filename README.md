@@ -12,6 +12,7 @@ Done:
 
 Next:
 * Modify psql image for seeding
+* Use Workload Identity for cluster authentication to secret manager
 
 Limitations:
 * Single node psql server, no replication
