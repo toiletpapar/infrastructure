@@ -22,11 +22,11 @@ spec:
             mountPath: /data
           resources:
             limits:
-              cpu: "500m" # or 0.5 vCPU
-              memory: "1Gi"
+              cpu: "250m"
+              memory: "200Mi"
             requests:
-              cpu: "500m"
-              memory: "1Gi"
+              cpu: "250m"
+              memory: "200Mi"
   volumeClaimTemplates:
   - metadata:
       name: postgresql-db-disk

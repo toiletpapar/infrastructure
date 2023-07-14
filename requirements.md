@@ -7,9 +7,10 @@
 Configure docker to use gcloud authentication
 `gcloud auth configure-docker us-east1-docker.pkg.dev`
 
+## Setup k8s cluster
 ## Retrieve k8s cluster information (GKE)
 `gcloud components install gke-gcloud-auth-plugin`
-`gcloud container clusters get-credentials autopilot-cluster-smithers --region=us-east1`
+`gcloud container clusters get-credentials cluster-1 --region=us-east1-d`
 
 https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
 
@@ -33,7 +34,7 @@ https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secr
 `kubectl apply -f ./psql/psql-statefulset.yaml`
 `kubectl apply -f ./psql/psql-service.yaml`
 
-Currently configured with low-resources, increase ase required.
+Currently configured with low-resources, increase as required.
 
 For HA-psql cluster see
 https://cloud.google.com/kubernetes-engine/docs/tutorials/stateful-workloads/postgresql#deploy-postgresql
@@ -42,17 +43,6 @@ https://cloud.google.com/kubernetes-engine/docs/tutorials/stateful-workloads/pos
 Ensure that `./smithers/credentials` is populated with the appropriate credentials for gcloud
 `kubectl apply -f ./smithers/smithers-deployment.yaml`
 `kubectl apply -f ./smithers/smithers-service.yaml`
-
-<!-- ## Create a Certificate and manage with GCM (repeat per expiration) -->
-<!-- ### Create DNS Authorization to prove ownership
-https://cloud.google.com/certificate-manager/docs/dns-authorizations
-
-`gcloud certificate-manager dns-authorizations create tylerpoon-ca-dns-authorization --domain="tylerpoon.ca"`
-
-### Create the certificate
-https://cloud.google.com/sdk/gcloud/reference/certificate-manager/certificates/create
-
-`gcloud certificate-manager certificates create tylerpoon.ca --dns-authorizations=tylerpoon-ca-dns-authorization --domains="tylerpoon.ca"` -->
 
 ## Deploy Ingress, Ingress Controller
 ### Controller
@@ -69,7 +59,7 @@ https://kubernetes.github.io/ingress-nginx/deploy/#environment-specific-instruct
 
 https://kubernetes.github.io/ingress-nginx/examples/static-ip/
 
-### Ingress (TODO)
+### Ingress
 `kubectl apply -f ./ingress/ingress.yaml`
 
 https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
@@ -89,10 +79,16 @@ See https://cert-manager.io/docs/installation/compatibility/#gke-autopilot.
 For Testing:
 * Change your email in `./ingress/issuer-staging.yaml`
 `kubectl apply -f ./ingress/issuer-staging.yaml`
+* In ingress.yaml
+`metadata.annotations.cert-manager.io/issuer: "letsencrypt-staging"`
+`kubectl apply -f ./ingress/ingress.yaml`
 
 For Production:
 * Change your email in `./ingress/issuer-prod.yaml`
 `kubectl apply -f ./ingress/issuer-prod.yaml`
+* In ingress.yaml
+`metadata.annotations.cert-manager.io/issuer: "letsencrypt-prod"`
+`kubectl apply -f ./ingress/ingress.yaml`
 
 ## Create a certificate automatically with cert-manager
 https://kubernetes.github.io/ingress-nginx/user-guide/tls/
