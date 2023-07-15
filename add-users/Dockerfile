@@ -14,4 +14,4 @@ RUN npm run build
 ENV GOOGLE_APPLICATION_CREDENTIALS ./credentials/gcloud.json
 ENV DB_SECRET_NAME production-psql
 
-ENTRYPOINT ["npm", "run", "start"]
+ENTRYPOINT ["node", "./build/seed/addUsers.js"]

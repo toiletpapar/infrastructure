@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: add-users-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: add-users-pod
+        image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/add-users:1.9
+        # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/add-users:test
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
+          requests:
+            cpu: "200m"
+            memory: "200Mi"
+      restartPolicy: Never
+      
