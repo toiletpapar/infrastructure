@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: smithers-crawler-cron
+spec:
+  schedule: "0 9 * * *"
+  timeZone: "America/Toronto"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: smithers-crawler-pod
+            image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-crawler:1.0
+            imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure

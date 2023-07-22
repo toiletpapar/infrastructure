@@ -25,10 +25,10 @@ echo $PASSWORD > $SCRIPT_DIR/credentials/postgres-passwd
 echo $DBNAME > $SCRIPT_DIR/credentials/postgres-db
 
 echo "Building docker image"
-IMAGE_NAME=us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.2
+IMAGE_NAME=us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.3
 GIT_URL=https://github.com/toiletpapar/smithers-server.git
 docker buildx build -t $IMAGE_NAME --no-cache --build-context repo=$GIT_URL $SCRIPT_DIR
 
 # In cmd
 # gcloud auth configure-docker us-east1-docker.pkg.dev
-# docker push us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.2
+# docker push us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.3

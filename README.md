@@ -11,7 +11,6 @@ Done:
 * Deploy smither's servers
 
 Next:
-* Modify psql image for seeding
 * Use Workload Identity for cluster authentication to secret manager
 
 Limitations:

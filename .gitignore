@@ -1,4 +1,1 @@
-/smithers/credentials
-/psql/credentials
-/ingress/credentials
-/add-users/credentials
+**/credentials

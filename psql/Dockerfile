@@ -10,4 +10,4 @@ ENV POSTGRES_PASSWORD_FILE /run/secrets/postgres-passwd
 ENV POSTGRES_INITDB_ARGS "-E UTF8"
 
 # Initialization scripts
-COPY --from=repo ./seed/schema /docker-entrypoint-initdb.d
+COPY --from=repo ./data/schema /docker-entrypoint-initdb.d

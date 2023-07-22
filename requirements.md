@@ -40,9 +40,13 @@ For HA-psql cluster see
 https://cloud.google.com/kubernetes-engine/docs/tutorials/stateful-workloads/postgresql#deploy-postgresql
 
 ## Deploy server
-Ensure that `./smithers/credentials` is populated with the appropriate credentials for gcloud
-`kubectl apply -f ./smithers/smithers-deployment.yaml`
-`kubectl apply -f ./smithers/smithers-service.yaml`
+Ensure that `./smithers-server/credentials` is populated with the appropriate credentials for gcloud
+`kubectl apply -f ./smithers-server/smithers-deployment.yaml`
+`kubectl apply -f ./smithers-server/smithers-service.yaml`
+
+## Deploy crawler
+Ensure that `./smithers-crawler/credentials` is populated with the appropriate credentials for gcloud
+`kubectl apply -f ./smithers-crawler/smithers-cron.yaml`
 
 ## Deploy Ingress, Ingress Controller
 ### Controller
