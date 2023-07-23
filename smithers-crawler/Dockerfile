@@ -12,5 +12,6 @@ RUN npm run build
 
 ENV GOOGLE_APPLICATION_CREDENTIALS ./credentials/gcloud.json
 ENV DB_SECRET_NAME production-psql
+ENV NODE_ENV production
 
 ENTRYPOINT ["npm", "run", "crawl"]
