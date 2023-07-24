@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: smithers-crawler-cron
 spec:
-  schedule: "0 9 * * *"
+  schedule: "0 7 * * *"
   timeZone: "America/Toronto"
   jobTemplate:
     spec:
