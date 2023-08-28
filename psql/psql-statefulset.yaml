@@ -31,7 +31,8 @@ spec:
   - metadata:
       name: postgresql-db-disk
     spec:
+      storageClassName: pd-standard
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: 10Gi
+          storage: 15Gi
