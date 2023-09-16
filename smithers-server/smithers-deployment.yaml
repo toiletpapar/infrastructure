@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: smithers-server
-        image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-server:1.18
+        image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-server:1.19
         ports:
         - containerPort: 8080
         resources:

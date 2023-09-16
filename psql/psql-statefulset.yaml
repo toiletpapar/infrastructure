@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: postgresql-db
-          image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.5
+          image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.6
           volumeMounts:
           - name: postgresql-db-disk
             mountPath: /data
