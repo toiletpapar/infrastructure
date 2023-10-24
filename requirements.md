@@ -99,5 +99,8 @@ For Production:
 
 ## Create a certificate automatically with cert-manager
 https://kubernetes.github.io/ingress-nginx/user-guide/tls/
+https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
 
-At this point, if you've updated your ingress with `metadata.annotations.cert-manager.io/issuer: "letsencrypt-prod"`, removing the secret will retrigger reissuing of the certificate by cert-manager
+* At this point, if you've updated your ingress with `metadata.annotations.cert-manager.io/issuer: "letsencrypt-prod"`, removing the secret will retrigger reissuing of the certificate by cert-manager
+`kubectl delete secret tls-secret`
+
