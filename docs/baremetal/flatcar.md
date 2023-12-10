@@ -1,31 +1,18 @@
 # For setting up a general computer
 
-## OS
-### Flatcar OS (Container OS)
-#### Boot from the Flatcar ISO on host machine
+## Flatcar OS (Container OS)
+### Boot from the Flatcar ISO on host machine
 * Download Flatcar ISO from drive
 * Burn the image into a drive (possibly using Raspberry Pi Imager)
 * Boot the image via BIOS compatibility mode (not UEFI)
   - https://www.asus.com/us/support/FAQ/1013017/#A1 for ASUS Laptop
 
-#### Create the config
+### Create the config
 You need to create a Butane config that will
 * configure the networks used by systemd-networkd (including wpa_supplicant) - https://www.flatcar.org/docs/latest/setup/customization/network-config-with-networkd/
 * allow you to SSH into the machine - https://www.flatcar.org/docs/latest/setup/security/customizing-sshd/
 * run k8s (control plane, nodes) - https://www.flatcar.org/docs/latest/container-runtimes/getting-started-with-kubernetes/
 * allow power saving when idle - https://www.flatcar.org/docs/latest/setup/customization/power-management/
-
-Find the Butane config used for the control plane at `docs/baremetal/cl-control.yaml`
-Find the Butane config used for nodes at `docs/baremetal/cl-node.yaml`
-
-Translate the Butane config to an Ignition config
-```
-# Control Plane
-cat cl-control.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition.json
-
-# Nodes
-cat cl-node.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition.json
-```
 
 #### Configure a wired network
 Find your network interface
@@ -124,8 +111,25 @@ systemd:
         WantedBy=multi-user.target   
 ```
 
+### Install flatcar on the host machine's drive
+Find the Butane config used for the control plane at `docs/baremetal/cl-control.yaml`
+Find the Butane config used for nodes at `docs/baremetal/cl-node.yaml`
 
-#### Install flatcar on the host machine's drive
+You can grab these configs by:
+```
+wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/cl-control.yaml"
+wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/cl-node.yaml"
+```
+
+Translate the Butane config to an Ignition config
+```
+# Control Plane
+cat cl-control.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition.json
+
+# Nodes
+cat cl-node.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition.json
+```
+
 Find the drive you want to install it to, likely `/dev/sda`
 ```
 lsblk
