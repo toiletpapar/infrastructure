@@ -55,9 +55,19 @@ https://www.flatcar.org/docs/latest/setup/security/customizing-sshd/
 Flatcar Container Linux defaults to running an OpenSSH daemon using systemd socket activation – when a client connects to the port configured for SSH, sshd is started on the fly for that client using a systemd unit derived automatically from a template.
 
 This project only allows the `core` user to login and disables password based authentication.
+For the public/private keypair (for rsa) use
+```
+ssh-keygen
+```
+
 ```
 variant: flatcar
 version: 1.0.0
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-rsa <<public key>>
 storage:
   files:
     - path: /etc/ssh/sshd_config
@@ -65,6 +75,11 @@ storage:
       mode: 0600
       contents:
         inline: |
+          # Supported HostKey algorithms by order of preference.
+          HostKey /etc/ssh/ssh_host_rsa_key
+          HostKey /etc/ssh/ssh_host_ed25519_key
+          HostKey /etc/ssh/ssh_host_ecdsa_key
+          
           # Use most defaults for sshd configuration.
           UsePrivilegeSeparation sandbox
           Subsystem sftp internal-sftp
@@ -74,6 +89,8 @@ storage:
           AllowUsers core
           AuthenticationMethods publickey
 ```
+
+Make the appropriate changes to `cl-control.yaml` and `cl-node.yaml` for your particular private/public keypairs
 
 #### Getting the host linked with the K8s cluster
 https://www.flatcar.org/docs/latest/container-runtimes/getting-started-with-kubernetes/

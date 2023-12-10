@@ -1,6 +1,11 @@
 ---
 version: 1.0.0
 variant: flatcar
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfLCF7EB18ABUPNFmPRhmzmQ5Aa63JXHf8wBxGx1xl8edo92PclEV3dG6KJNuCe0z0j6dliPqxVKpdtPrgEYoyo+MfVnrON7wZRxq/9Gw9IJXRfx8ap8VX/VqLGLIoKsVMuj2j5Bz4JyjDm8ji09oCfyn4J1iCA10Iq4S7raX3T8ennGOx8C58ahzDhuc2qQKW7PFx7Cs/Fr+DKcaOaCSa4zxJyEbcyf1aSGLtzvcujSjoyuYoKIlcU74YVQlbkHHZ5BWreSx9PKQBB7/HXxV0KVle6TniGpPOYjWdvTav8F/kPDuhSESvDV7NdEjYnlNdpRC4HZ2VKwVhWDwuNJpz
 storage:
   links:
     - target: /opt/extensions/kubernetes/kubernetes-v1.27.4-x86-64.raw
@@ -30,8 +35,8 @@ storage:
       contents:
         inline: |
           # Supported HostKey algorithms by order of preference.
-          HostKey /etc/ssh/ssh_host_ed25519_key
           HostKey /etc/ssh/ssh_host_rsa_key
+          HostKey /etc/ssh/ssh_host_ed25519_key
           HostKey /etc/ssh/ssh_host_ecdsa_key
           
           # Use most defaults for sshd configuration.
