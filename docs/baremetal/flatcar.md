@@ -7,6 +7,8 @@
 * Boot the image via BIOS compatibility mode (not UEFI)
   - https://www.asus.com/us/support/FAQ/1013017/#A1 for ASUS Laptop
 
+At this point, you should be in Flatcar Linux and should be able to run commands
+
 ### Create the config
 You need to create a Butane config that will
 * configure the networks used by systemd-networkd (including wpa_supplicant) - https://www.flatcar.org/docs/latest/setup/customization/network-config-with-networkd/
@@ -20,6 +22,26 @@ Find your network interface
 ls /sys/class/net
 ```
 
+Note you'll likely want a static ip for the control plane
+You can use your router's DHCP reservation for this ip
+```
+variant: flatcar
+version: 1.0.0
+storage:
+  files:
+    - path: /etc/systemd/network/00-<<your network interface>>.network
+      contents:
+        inline: |
+          [Match]
+          Name=<<your network interface>>
+
+          [Network]
+          DNS=8.8.8.8
+          Address=<<reserved ip>>/24
+          Gateway=<<router gateway ip>>
+```
+
+If DHCP is acceptable
 ```
 variant: flatcar
 version: 1.0.0
@@ -139,3 +161,28 @@ Run the installation script
 ```
 flatcar-install -d /dev/sda -i ignition.json -C stable
 ```
+
+At this point flatcar should be bootable from the host's disk. It is now safe to reboot the host and remove the boot drive.
+
+### Deploy CNI on the control plane
+At this point you should be able to:
+
+* SSH into the machine
+`ssh core@<<node ip address>>`
+
+* Deploy a CNI
+This project uses Calico (v3.24.1)
+`kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml`
+
+* Allow for node reboots on Kubernetes or Flatcar update (via Kured)
+```
+latest=$(curl -s https://api.github.com/repos/kubereboot/kured/releases | jq -r '.[0].tag_name')
+kubectl apply -f "https://github.com/kubereboot/kured/releases/download/$latest/kured-$latest-dockerhub.yaml"
+```
+
+At this point, the k8s control plane should be in the "Ready" state. You can verify this by running `kubectl get nodes`
+
+### (TODO) Modify the control plane to allow for authorized access to Artifact Repository
+https://www.flatcar.org/docs/latest/container-runtimes/registry-authentication/
+
+At this point, k8s should be able to pull images from Artifact Repository

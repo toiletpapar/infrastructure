@@ -1,0 +1,8 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+# Will be used as the target "cluster" in the kubeconfig
+clusterName: "smithers"
+# Will be used as the "server" (IP or DNS name) of this cluster in the kubeconfig
+controlPlaneEndpoint: "192.168.0.41:6443"
+# The cluster CA key and certificate will be loaded from this local directory
+certificatesDir: "/etc/kubernetes/pki"
