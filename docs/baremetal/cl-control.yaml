@@ -1,0 +1,86 @@
+---
+version: 1.0.0
+variant: flatcar
+storage:
+  links:
+    - target: /opt/extensions/kubernetes/kubernetes-v1.27.4-x86-64.raw
+      path: /etc/extensions/kubernetes.raw
+      hard: false
+  files:
+    - path: /etc/systemd/network/00-enp4s0f1.network
+      contents:
+        inline: |
+          [Match]
+          Name=enp4s0f1
+
+          [Network]
+          DHCP=yes
+    - path: /etc/sysupdate.kubernetes.d/kubernetes.conf
+      contents:
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes.conf
+    - path: /etc/sysupdate.d/noop.conf
+      contents:
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/noop.conf
+    - path: /opt/extensions/kubernetes/kubernetes-v1.27.4-x86-64.raw
+      contents:
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes-v1.27.4-x86-64.raw
+    - path: /etc/ssh/sshd_config
+      overwrite: true
+      mode: 0600
+      contents:
+        inline: |
+          # Supported HostKey algorithms by order of preference.
+          HostKey /etc/ssh/ssh_host_ed25519_key
+          HostKey /etc/ssh/ssh_host_rsa_key
+          HostKey /etc/ssh/ssh_host_ecdsa_key
+
+          # Use most defaults for sshd configuration.
+          UsePrivilegeSeparation sandbox
+          Subsystem sftp internal-sftp
+          UseDNS no
+
+          PermitRootLogin no
+          AllowUsers core
+          AuthenticationMethods publickey
+systemd:
+  units:
+    - name: cpu-governor.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Enable CPU power saving
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/sbin/modprobe cpufreq_conservative
+        ExecStart=/usr/bin/sh -c '/usr/bin/echo "conservative" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
+
+        [Install]
+        WantedBy=multi-user.target 
+    - name: systemd-sysupdate.timer
+      enabled: true
+    - name: systemd-sysupdate.service
+      dropins:
+        - name: kubernetes.conf
+          contents: |
+            [Service]
+            ExecStartPre=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/kubernetes.raw > /tmp/kubernetes"
+            ExecStartPre=/usr/lib/systemd/systemd-sysupdate -C kubernetes update
+            ExecStartPost=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/kubernetes.raw > /tmp/kubernetes-new"
+            ExecStartPost=/usr/bin/sh -c "[[ $(cat /tmp/kubernetes) != $(cat /tmp/kubernetes-new) ]] && touch /run/reboot-required"
+    - name: kubeadm.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Kubeadm service
+        Requires=containerd.service
+        After=containerd.service
+        ConditionPathExists=!/etc/kubernetes/kubelet.conf
+        [Service]
+        ExecStartPre=/usr/bin/kubeadm init
+        ExecStartPre=/usr/bin/mkdir /home/core/.kube
+        ExecStartPre=/usr/bin/cp /etc/kubernetes/admin.conf /home/core/.kube/config
+        ExecStart=/usr/bin/chown -R core:core /home/core/.kube
+        [Install]
+        WantedBy=multi-user.target

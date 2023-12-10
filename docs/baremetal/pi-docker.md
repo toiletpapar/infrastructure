@@ -9,14 +9,6 @@
 * Format SD with Raspberry Pi OS w/o desktop, 64-bit
 * Plug in keyboard, monitor, SD, and power and wait for setup
 
-### Flatcar OS (Container OS)
-* Download Flatcar ISO from drive
-* Burn the image into a drive (possibly using Raspberry Pi Imager)
-* Boot the image via BIOS compatibility mode (not UEFI)
-  - https://www.asus.com/us/support/FAQ/1013017/#A1 for ASUS Laptop
-
-...TBD
-
 ## Network
 ### Connect to a network
 Find current connections
