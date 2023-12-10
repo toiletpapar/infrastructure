@@ -50,6 +50,10 @@ In this project, we use ClusterRole and ClusterRoleBinding to allow read/write a
 You can find the configurations in `kubectl-admin-binding.yaml` and `kubectl-admin-role.yaml`.
 The `admin` user is hard-coded in `kubectl-admin-binding.yaml`.
 
+On the control plane host, add the role and binding:
+`kubetl apply -f kubectl-admin-binding.yaml`
+`kubectl apply -f kubectl-admin-role.yaml`
+
 At this point your user should be able to run `kubectl get nodes`
 
 # Upgrades
