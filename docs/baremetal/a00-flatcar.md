@@ -186,3 +186,6 @@ At this point, the k8s control plane should be in the "Ready" state. You can ver
 https://www.flatcar.org/docs/latest/container-runtimes/registry-authentication/
 
 At this point, k8s should be able to pull images from Artifact Repository
+
+### Customize your k8s cluster
+For k8 cluster customization used in this project, see kubeadm.md

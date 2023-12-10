@@ -39,5 +39,18 @@ controlPlaneEndpoint: "<<static ip of control plane, see flatcar.md#configure-a-
 certificatesDir: "/etc/kubernetes/pki"
 ```
 
+Generate the kubeconfig (it'll print in stdout)
+`sudo kubeadm kubeconfig user --config kubeadm-user.yaml --client-name admin`
+
+At this point you can use this .kube/config to access this cluster with user `admin`
+
+# Adding permissions to the user
+In this project, we use ClusterRole and ClusterRoleBinding to allow read/write access to all resources in all namespaces.
+
+You can find the configurations in `kubectl-admin-binding.yaml` and `kubectl-admin-role.yaml`.
+The `admin` user is hard-coded in `kubectl-admin-binding.yaml`.
+
+At this point your user should be able to run `kubectl get nodes`
+
 # Upgrades
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
