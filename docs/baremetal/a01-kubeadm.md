@@ -25,6 +25,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 # Creating a kubeconfig for clients
+https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#kubeconfig-additional-users
 Retrieve the static ip for your control plane cluster. This static ip was the one used in the flatcar.md setup
 
 ```
@@ -55,6 +56,9 @@ On the control plane host, add the role and binding:
 `kubectl apply -f kubectl-admin-role.yaml`
 
 At this point your user should be able to run `kubectl get nodes` on the client
+
+# Verify systemd cgroupdriver and other settings
+`kubectl describe cm kubelet-config -n kube-system`
 
 # Upgrades
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/

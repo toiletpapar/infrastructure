@@ -6,6 +6,7 @@
 ## OS
 ### Raspberry Pi OS
 * Download Raspberry Pi Imager
+* Pick a `username` that you'll use when installing raspberrypi os (this project uses `core`)
 * Format SD with Raspberry Pi OS w/o desktop, 64-bit
 * Plug in keyboard, monitor, SD, and power and wait for setup
 
@@ -52,6 +53,8 @@ service NetworkManager restart
 ```
 
 ## SSH
+If you enabled SSH during the PI OS customization, you can ignore this section
+
 Find your raspberry pi's ip address
 ```
 nmcli device show
@@ -70,11 +73,12 @@ Choose Finish
 
 ### SSH into your device
 ```
-ssh <<username>>@<<raspberry pi's ip address>>
+ssh <<username>>@<<pi-node ip address>>
 ```
 
 At this point you should be able to execute commands remotely
 
+<!-- 
 ## Installing Docker
 ### For Pi using Raspberry Pi OS
 https://docs.docker.com/engine/install/debian/#prerequisites
@@ -92,4 +96,4 @@ At this point you should have docker ready to go. Test this by:
 ```
 sudo docker run hello-world
 ```
-
+ -->
