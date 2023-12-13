@@ -169,3 +169,6 @@ kubeadm token create --print-join-command
 ```
 
 Run the printed join command on the node that you want to join the cluster (the pi)
+
+### Troubleshooting cgroup_memory
+https://forums.raspberrypi.com/viewtopic.php?t=203128
