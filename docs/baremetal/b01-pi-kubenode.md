@@ -76,7 +76,7 @@ mkdir -p /opt/cni/bin
 tar Cxzvf /opt/cni/bin cni-plugins-linux-arm64-v1.4.0.tgz
 ```
 
-### Generate a default containerd config
+### Generate and use default containerd config
 ```
 containerd config default > config.toml
 sudo mv config.toml /etc/containerd/config.toml
@@ -112,6 +112,9 @@ In your containerd config you can overwrite the sandbox image by setting the fol
 
 ### Use custom containerd config
 For your convenience, the above steps were performed for this project and the resulting config is found at `https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/config.toml`
+
+If you `wget` the above config, ensure you move it:
+`sudo mv config.toml /etc/containerd/config.toml`
 
 ### Restart containerd
 `sudo systemctl restart containerd`
