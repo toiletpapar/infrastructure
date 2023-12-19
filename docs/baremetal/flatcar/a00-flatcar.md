@@ -15,6 +15,7 @@ You need to create a Butane config that will
 * allow you to SSH into the machine - https://www.flatcar.org/docs/latest/setup/security/customizing-sshd/
 * run k8s (control plane, nodes) - https://www.flatcar.org/docs/latest/container-runtimes/getting-started-with-kubernetes/
 * allow power saving when idle - https://www.flatcar.org/docs/latest/setup/customization/power-management/
+* (Required for `metallb` running in L2 mode) modify iptables to open port 7946 using systemd units - https://www.flatcar.org/docs/latest/provisioning/config-transpiler/examples/#systemd-units
 
 #### Configure a wired network
 Find your network interface
@@ -131,6 +132,29 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target   
+```
+
+#### Configure iptables with systemd units
+This step is required only if you want to run `metallb` in L2 mode. In this case, we need to open port 7946 to allow communication between nodes with `iptables`. See https://metallb.universe.tf/#requirements.
+
+```
+variant: flatcar
+version: 1.0.0
+systemd:
+  units:
+    - name: openport-metallb.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Open port 7946 for metallb to use for node communication.
+
+        [Service]
+        Type=oneshot
+        ExecStart=/sbin/iptables -I INPUT -p tcp --dport 7946 -j ACCEPT
+        ExecStart=/sbin/iptables -I OUTPUT -p tcp --sport 7946 -j ACCEPT
+
+        [Install]
+        WantedBy=multi-user.target    
 ```
 
 ### Install flatcar on the host machine's drive

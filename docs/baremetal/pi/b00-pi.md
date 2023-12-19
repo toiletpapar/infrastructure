@@ -1,6 +1,6 @@
 # For setting up Raspberry Pi
 ## Hardware
-* 1 GB RAM
+* 4 GB RAM
 * 64 GB SD
 
 ## OS

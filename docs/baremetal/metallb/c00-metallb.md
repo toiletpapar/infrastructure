@@ -1,0 +1,80 @@
+# MetalLB
+This is an open-source implementation of a load balancer suitable for use on bare metal clusters.
+This is a requirement for implementing services of type `LoadBalancer`
+This project runs MetalLB in layer2
+
+## Prerequisite
+At this point you should:
+* Be able to access your cluster through `kubectl`
+* The cluster you're accessing should be baremetal and meet these requirements:
+`https://metallb.universe.tf/installation/clouds/`
+* And these requirements: https://metallb.universe.tf/#requirements
+
+## Installing MetalLB
+https://metallb.universe.tf/installation/
+
+### Enable Strict ARP
+A requirement to install metallb
+
+#### Dry Run Changes
+```
+kubectl get configmap kube-proxy -n kube-system -o yaml | \
+sed -e "s/strictARP: false/strictARP: true/" | \
+kubectl diff -f - -n kube-system
+```
+
+No output means this is configured correctly. Otherwise, it'll show the changes you're about to make.
+
+#### Apply Changes
+```
+kubectl get configmap kube-proxy -n kube-system -o yaml | \
+sed -e "s/strictARP: false/strictARP: true/" | \
+kubectl apply -f - -n kube-system
+```
+
+### Install via manifest
+This project installs metallb through manifests. This project uses version v0.13.12
+```
+kubectl apply -f docs/baremetal/metallb/metallb-native.yaml
+```
+
+The installation manifest does not include a configuration file. MetalLB’s components will still start, but will remain idle until you start deploying resources.
+
+###### TODO, configure metallb after native deployment, troubleshoot opening port
+
+## Configure metallb
+https://metallb.universe.tf/configuration/
+
+### Add IP Address Pool
+The IPs that will be assigned to your `LoadBalancer` type services fulfilled by MetalLB.
+
+This project uses a single load balancer instance to service the cluster and therefore only requires one ip address to hand out.
+
+```
+#ip-address-pool.yaml
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: <<name of ip address pool CRD>>
+  namespace: metallb-system
+spec:
+  addresses:
+  - <<ip address to hand out to LB service>>
+```
+
+`kubectl apply -f docs/baremetal/metallb/ip-address-pool.yaml`
+
+### Add an l2 ip advertisement
+```
+#l2-advertisement.yaml
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2advertisement-single-ip
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - <<name of ip address pool CRD>>
+```
+
+`kubectl apply -f docs/baremetal/metallb/l2-advertisement.yaml`

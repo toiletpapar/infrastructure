@@ -91,3 +91,16 @@ systemd:
         ExecStart=/usr/bin/chown -R core:core /home/core/.kube
         [Install]
         WantedBy=multi-user.target
+    - name: openport-metallb.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Open port 7946 for metallb to use for node communication.
+
+        [Service]
+        Type=oneshot
+        ExecStart=/sbin/iptables -I INPUT -p tcp --dport 7946 -j ACCEPT
+        ExecStart=/sbin/iptables -I OUTPUT -p tcp --sport 7946 -j ACCEPT
+
+        [Install]
+        WantedBy=multi-user.target  
