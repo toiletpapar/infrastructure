@@ -10,6 +10,12 @@ At this point you should:
 `https://metallb.universe.tf/installation/clouds/`
 * And these requirements: https://metallb.universe.tf/#requirements
 
+## Check if port 7946 is open on all nodes in your cluster
+```
+ssh <<username>>@<<node ip address>> # user is probably core if you used flatcar
+netstat -tuplen
+```
+
 ## Installing MetalLB
 https://metallb.universe.tf/installation/
 

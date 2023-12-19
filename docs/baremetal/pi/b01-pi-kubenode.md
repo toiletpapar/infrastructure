@@ -12,8 +12,13 @@ https://www.server-world.info/en/note?os=Debian_12&p=ufw&f=1
 `ufw status verbose`
 `ufw enable`
 
-### Open specific ports (for k8s api server)
-`ufw allow from <<kubeapi private ip address>> to any port 6443 proto tcp`
+### Open specific ports (for k8s api server, metallb)
+```
+# for kubeapi
+ufw allow from <<kubeapi private ip address>> to any port 6443 proto tcp
+# for metallb
+ufw allow 7946
+```
 
 ## Installing containerd
 https://github.com/containerd/containerd/blob/main/docs/getting-started.md
