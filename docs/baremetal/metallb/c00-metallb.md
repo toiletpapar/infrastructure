@@ -40,8 +40,6 @@ kubectl apply -f docs/baremetal/metallb/metallb-native.yaml
 
 The installation manifest does not include a configuration file. MetalLB’s components will still start, but will remain idle until you start deploying resources.
 
-###### TODO, configure metallb after native deployment, troubleshoot opening port
-
 ## Configure metallb
 https://metallb.universe.tf/configuration/
 
