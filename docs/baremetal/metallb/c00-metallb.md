@@ -82,3 +82,13 @@ spec:
 ```
 
 `kubectl apply -f docs/baremetal/metallb/l2-advertisement.yaml`
+
+At this point, you should be able to deploy load balancer services. For additional testing to see everything is working correctly, see below.
+
+## Testing
+* Run an nginx deployment
+* Create and run a ClusterIP service to match the nginx deployment
+* Port forward to ensure you can access the nginx deployment
+* Modify the service to type load balancer
+* Describe the service to find the assigned ip address
+* You should be able to find the nginx welcome page through the load balancer
