@@ -11,6 +11,8 @@
 * Plug in keyboard, monitor, SD, and power and wait for setup
 
 ## Network
+If you configured your network during pi OS customization, you may not need to follow these steps
+
 ### Connect to a network
 Find current connections
 ```
@@ -76,24 +78,4 @@ Choose Finish
 ssh <<username>>@<<pi-node ip address>>
 ```
 
-At this point you should be able to execute commands remotely
-
-<!-- 
-## Installing Docker
-### For Pi using Raspberry Pi OS
-https://docs.docker.com/engine/install/debian/#prerequisites
-
-### For removing sudo with docker (and other post-installation instructions)
-https://docs.docker.com/engine/install/linux-postinstall/
-
-#### Automatically start on boot with systemd
-```
-sudo systemctl enable docker.service
-sudo systemctl enable containerd.service
-```
-
-At this point you should have docker ready to go. Test this by:
-```
-sudo docker run hello-world
-```
- -->
+At this point you should be able to execute commands remotely. From here you can either turn your pi into a private registry (b01-pi-registry.md) or a k8s node if hardware is capable of such (b01-pi-kubenode.md)

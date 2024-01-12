@@ -1,0 +1,18 @@
+; reverse map zone file for 192.168.0.x
+$TTL 2d  ; 172800 seconds
+$ORIGIN 0.168.192.IN-ADDR.ARPA.
+@     IN      SOA   ns1.smithers.private email.smithers.private. (
+                                        2024011101 ; serial number
+                                        3h         ; refresh
+                                        15m        ; update retry
+                                        3w         ; expiry
+                                        3h         ; nx = nxdomain ttl
+                                        )
+; only one NS is required for this private file
+; and is an out of zone name
+      IN      NS      ns1.smithers.private.
+; other IP addresses can be added as required
+; this maps 192.168.254.32 as shown
+0        IN      PTR       api.smithers.private.    ; this points to the ip address provided by ip-address-pool.yaml when configuring metallb
+24        IN      PTR       k8s.smithers.private.   ; this points to the box hosting the k8s control plane
+32   IN      PTR       registry.smithers.private.   ; this points to the box hosting the registry container for images
