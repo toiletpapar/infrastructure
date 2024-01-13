@@ -1,6 +1,7 @@
 # For turning your pi into a DNS server for private hostnames
 https://www.ionos.ca/digitalguide/server/configuration/how-to-make-your-raspberry-pi-into-a-dns-server/
 https://arstechnica.com/gadgets/2020/08/understanding-dns-anatomy-of-a-bind-zone-file/
+https://bind9.readthedocs.io/en/latest/#
 
 ## Install tools
 ```
