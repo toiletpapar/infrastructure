@@ -14,8 +14,8 @@ $ORIGIN smithers.private. ; base domain-name
 ; domain hosts includes NS records defined above
 ; plus any others required
 ; for instance a user query for the A RR of k8s.smithers.private will
-; return the IPv4 address 192.168.0.24 from this zone file
+; return the IPv4 address 192.168.0.41 from this zone file
 ns1        IN      A       192.168.0.32   ; this points to the DNS nameserver box
 api        IN      A       192.168.0.0    ; this points to the ip address provided by ip-address-pool.yaml when configuring metallb
-k8s        IN      A       192.168.0.24   ; this points to the box hosting the k8s control plane
+k8s        IN      A       192.168.0.41   ; this points to the box hosting the k8s control plane
 registry   IN      A       192.168.0.32   ; this points to the box hosting the registry container for images

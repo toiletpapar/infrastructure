@@ -14,5 +14,5 @@ $ORIGIN 0.168.192.IN-ADDR.ARPA.
 ; other IP addresses can be added as required
 ; this maps 192.168.254.32 as shown
 0        IN      PTR       api.smithers.private.    ; this points to the ip address provided by ip-address-pool.yaml when configuring metallb
-24        IN      PTR       k8s.smithers.private.   ; this points to the box hosting the k8s control plane
+41        IN      PTR       k8s.smithers.private.   ; this points to the box hosting the k8s control plane
 32   IN      PTR       registry.smithers.private.   ; this points to the box hosting the registry container for images
