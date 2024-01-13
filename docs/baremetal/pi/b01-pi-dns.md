@@ -20,19 +20,27 @@ Ensure the following files were provided (necessary for the configurations in th
 These files may need to be modified for your specific private ip addresses serving your registry, k8s, or the smithers api.
 
 ```
-# The authoritative name server and resolver
-wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/named.conf
-# Keep a copy of the provided `named.conf`
-mv /etc/bind/named.conf /etc/bind/named.conf.copy
-mv named.conf /etc/bind/named.conf
+# Keep a copy of the provided `named.conf.local`
+mv /etc/bind/named.conf.local /etc/bind/named.conf.local.copy
+# The zones to make BIND an authoritative name server for our local domain
+wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/named.conf.local
+mv named.conf.local /etc/bind/named.conf.local
+sudo chown root:bind /etc/bind/named.conf.local
+
+# Keep a copy of the provided `named.conf.options`
+mv /etc/bind/named.conf.options /etc/bind/named.conf.options.copy
+# The options for BIND to make it a ACLs, resolver, and for logging
+wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/named.conf.options
+mv named.conf.options /etc/bind/named.conf.options
+sudo chown root:bind /etc/bind/named.conf.options
 
 # The domain
-wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/smithers.private
-mv smithers.private /etc/bind/smithers.private
+wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/db.smithers.private
+mv db.smithers.private /etc/bind/db.smithers.private
 
 # Reverse IP lookup for deployed domain
-wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/0.168.192.in-addr.arpa
-mv 0.168.192.in-addr.arpa /etc/bind/0.168.192.in-addr.arpa
+wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/db.rev.0.168.192.in-addr.arpa
+mv db.rev.0.168.192.in-addr.arpa /etc/bind/db.rev.0.168.192.in-addr.arpa
 ```
 
 ### named.conf
