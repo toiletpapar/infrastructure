@@ -52,7 +52,7 @@ options {
   max-cache-size 50%;
 };
 // logging clause
-// log to log/named/default.log all events from warning UP in severity
+// log to log/named/default.log all events from info UP in severity
 // uses 3 files in rotation swaps files when size reaches 250K
 // failure messages that occur before logging is established are
 // in syslog (/var/log/messages)
@@ -63,8 +63,8 @@ logging {
     // expand to log/named/default.log
     file "log/named/default.log" versions 3 size 250k;
 
-    // only log warning and up messages - all others discarded
-    severity warning;
+    // only log info and up messages - all others discarded
+    severity info;
     print-time yes;
     print-severity yes;
   };
