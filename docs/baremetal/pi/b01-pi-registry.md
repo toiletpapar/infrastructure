@@ -82,15 +82,52 @@ Now it's time to configure your pi to expose the registry on the private network
 https://distribution.github.io/distribution/about/deploying/#run-an-externally-accessible-registry
 
 For an internally exposed registry, a self-signed cert secured registry should suffice. To begin this process, you must have set up a local DNS (see `baremetal/pi/b01-pi-dns.md`).
+If you followed the DNS docs, then you should have a domain `registry.smithers.private` that points to your registry box. The below makes use of this domain.
 
 Make the self-signed certs
 ```
 mkdir -p certs
 openssl req \
   -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key \
-  -addext "subjectAltName = DNS:myregistry.domain.local" \
+  -addext "subjectAltName = DNS:registry.smithers.private" \
   -x509 -days 365 -out certs/domain.crt
 ```
+
+Stop the currently running registry
+```
+docker container stop registry
+```
+
+Restart the registry, directing it to use the TLS certificate
+```
+docker run -d \
+  --restart=always \
+  --name registry \
+  -v "$(pwd)"/certs:/certs \
+  -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  -p 443:443 \
+  registry:latest
+```
+
+## Instruct every docker daemon to trust the certificate
+https://distribution.github.io/distribution/about/insecure/
+
+Linux
+```
+cp certs/domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
+```
+
+Windows
+```
+# You may need to adjust these for the core use or whever the cert is located in the registry box
+scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
+
+# Open explorer and click on the cert to add it to the Trusted Root Certificate Authorities store
+```
+
+At this point you can run the Test section again on client machine and verify that you can reach the registry through `registry.smithers.private`.
 
 ## Stopping the registry
 If you need to clean up your node, you can stop the registry and remove all its data by running the following commands:
@@ -106,5 +143,5 @@ https://distribution.github.io/distribution/about/
 At this point your registry should be running correctly.
 
 ## Enable the registry port
-The registry default port is 5000.
-`ufw allow 5000`
+Because we enabled tls for the registry
+`ufw allow 443`

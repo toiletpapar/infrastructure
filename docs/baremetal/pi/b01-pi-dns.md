@@ -1,4 +1,4 @@
-# For turning your pi into a DNS server for private hostnames
+# For turning your pi into a DNS server for private hostnames (using BIND9)
 This is so that you can refer to domain names rather than private ips in your code and manage name resolution here.
 https://www.ionos.ca/digitalguide/server/configuration/how-to-make-your-raspberry-pi-into-a-dns-server/
 https://arstechnica.com/gadgets/2020/08/understanding-dns-anatomy-of-a-bind-zone-file/
@@ -71,6 +71,8 @@ sudo chmod 660 /var/cache/bind/log/named/default.log
 
 ## Notes
 Additionally, `/etc/bind/named.conf` may be of interest for including other files (out of the scope of this project)
+
+The robustness of this setup can additionally be improved by leveraging another DNS server to act as a secondary to this primary.
 
 ## Restart BIND9
 ```
