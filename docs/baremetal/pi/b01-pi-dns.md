@@ -44,7 +44,7 @@ mv db.rev.0.168.192.in-addr.arpa /etc/bind/db.rev.0.168.192.in-addr.arpa
 ```
 
 ### Options (named.conf.options)
-These options turn thi
+These options turn this DNS server into a forward resolver, among other configurations.
 * Add ACL for the project's private network
 * Allow only our project's private network to query this DNS server
 * Allow recursive queries for normal domain resolution outside of what's handled by this DNS server
@@ -53,10 +53,9 @@ These options turn thi
 * `empty-zones-enable yes` to ensure that reverse mapped private IPs (e.g. 192.168.0.10) that are not resolve aren't forwarded to the public network
 * Add `max-cache-size` for this particular project because a registry service is ran on the same host
 * Add all `category default` logs to the `default_log` channel. This channel rotates from 3 files of size 250k to `/var/cache/bind/log/named/default.log`. It only contains `warning` logs and up.
-* Define the zones for which this DNS server is authoritative (forwarding everything else): `localhost`, `0.0.127.in-addr.arpa`, `smithers.private`, `0.168.192.in-addr.arpa`
 
 #### Zones (named.conf.local/named.conf.default-zones)
-Describes the areas for which this DNS server is authoritative
+Define the zones for which this DNS server is authoritative (forwarding everything else): `localhost`, `0.0.127.in-addr.arpa`, `smithers.private`, `0.168.192.in-addr.arpa`
 * [By default-zones] localhost - Specifies how `localhost` should resolve (e.g. to `127.0.0.1`)
 * [By default-zones] 0.0.127.in-addr.arpa - Reverse map zone that specifies how `127.0.0.1` should map to `localhost`
 * smithers.private - Specifies how to resolve `smithers.private`
