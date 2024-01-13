@@ -1,4 +1,5 @@
 # For turning your pi into a DNS server for private hostnames
+This is so that you can refer to domain names rather than private ips in your code and manage name resolution here.
 https://www.ionos.ca/digitalguide/server/configuration/how-to-make-your-raspberry-pi-into-a-dns-server/
 https://arstechnica.com/gadgets/2020/08/understanding-dns-anatomy-of-a-bind-zone-file/
 https://bind9.readthedocs.io/en/latest/#
@@ -16,6 +17,8 @@ Ensure the following files were provided (necessary for the configurations in th
 ```
 
 ## Setup zones
+These files may need to be modified for your specific private ip addresses serving your registry, k8s, or the smithers api.
+
 ```
 # The authoritative name server and resolver
 wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/named.conf
@@ -28,8 +31,8 @@ wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/
 mv smithers.private /etc/bind/smithers.private
 
 # Reverse IP lookup for deployed domain
-wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/0.168.192.in-addr.arpa.conf
-mv 0.168.192.in-addr.arpa.conf /etc/bind/0.168.192.in-addr.arpa.conf
+wget https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/pi/0.168.192.in-addr.arpa
+mv 0.168.192.in-addr.arpa /etc/bind/0.168.192.in-addr.arpa
 ```
 
 ### named.conf
@@ -40,8 +43,12 @@ mv 0.168.192.in-addr.arpa.conf /etc/bind/0.168.192.in-addr.arpa.conf
 * Add addresses of public Google DNS resolvers to forward queries for which this DNS server is not authoritative
 * `empty-zones-enable yes` to ensure that reverse mapped private IPs (e.g. 192.168.0.10) that are not resolve aren't forwarded to the public network
 * Add `max-cache-size` for this particular project because a registry service is ran on the same host
-* Add all `category default` logs to the `default_log` channel. This channel rotates from 3 files of size 250k at `/var/log/named/default.log`. It only contains `warning` logs and up.
+* Add all `category default` logs to the `default_log` channel. This channel rotates from 3 files of size 250k at `/home/core/bind/log/named/default.log`. It only contains `warning` logs and up.
 * Define the zones for which this DNS server is authoritative (forwarding everything else): `localhost`, `0.0.127.in-addr.arpa`, `smithers.private`, `0.168.192.in-addr.arpa`
+
+#### Logging
+Ensure the path exists:
+`/home/core/bind/log/named/default.log`
 
 #### Zones
 Describes the areas for which this DNS server is authoritative
