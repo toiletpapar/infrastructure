@@ -79,3 +79,20 @@ ssh <<username>>@<<pi-node ip address>>
 ```
 
 At this point you should be able to execute commands remotely. From here you can either turn your pi into a private registry (b01-pi-registry.md) or a k8s node if hardware is capable of such (b01-pi-kubenode.md)
+
+## Install UFW
+You'll want UFW to manage your firewall/ports in the other pi tutorials
+https://www.server-world.info/en/note?os=Debian_12&p=ufw&f=1
+`apt -y install ufw`
+
+### Run UFW as a service
+`systemctl enable --now ufw`
+`systemctl status ufw`
+
+### Enable UFW
+`ufw status verbose`
+`ufw enable`
+
+### Enable SSH port
+Note that when you install ufw, you also likely disabled the port for SSH.
+`ufw allow ssh`

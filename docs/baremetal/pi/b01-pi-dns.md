@@ -77,5 +77,8 @@ Additionally, `/etc/bind/named.conf` may be of interest for including other file
 sudo service bind9 restart
 ```
 
+## Enable DNS Port
+`ufw allow 53`
+
 ## Modify Router to use your DNS server
 This is normally done through your router's settings (GUI)

@@ -105,23 +105,6 @@ https://distribution.github.io/distribution/about/
 
 At this point your registry should be running correctly.
 
-## Installing a front-end firewall (ufw)
-https://www.server-world.info/en/note?os=Debian_12&p=ufw&f=1
-
-### Install UFW
-`apt -y install ufw`
-
-### Run UFW as a service
-`systemctl enable --now ufw`
-`systemctl status ufw`
-
-### Enable UFW
-`ufw status verbose`
-`ufw enable`
-
-### Enable the registry port
+## Enable the registry port
 The registry default port is 5000.
 `ufw allow 5000`
-
-Note that when you install ufw, you also likely disabled the port for SSH.
-`ufw allow ssh`
