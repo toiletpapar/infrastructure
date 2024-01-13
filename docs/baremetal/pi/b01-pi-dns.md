@@ -16,7 +16,7 @@ Ensure the following files were provided (necessary for the configurations in th
 /etc/bind/db.127
 ```
 
-## Setup zones
+## Setup zones and option configuration files
 These files may need to be modified for your specific private ip addresses serving your registry, k8s, or the smithers api.
 
 ```
@@ -54,21 +54,27 @@ These options turn this DNS server into a forward resolver, among other configur
 * Add `max-cache-size` for this particular project because a registry service is ran on the same host
 * Add all `category default` logs to the `default_log` channel. This channel rotates from 3 files of size 250k to `/var/cache/bind/log/named/default.log`. It only contains `warning` logs and up.
 
-#### Zones (named.conf.local/named.conf.default-zones)
+### Zones (named.conf.local/named.conf.default-zones)
 Define the zones for which this DNS server is authoritative (forwarding everything else): `localhost`, `0.0.127.in-addr.arpa`, `smithers.private`, `0.168.192.in-addr.arpa`
 * [By default-zones] localhost - Specifies how `localhost` should resolve (e.g. to `127.0.0.1`)
 * [By default-zones] 0.0.127.in-addr.arpa - Reverse map zone that specifies how `127.0.0.1` should map to `localhost`
-* smithers.private - Specifies how to resolve `smithers.private`
-* 0.168.192.in-addr.arpa - Reverse map zone that specifies how to resolve private ips for `smithers.private`
+* smithers.private - Specifies how to resolve `smithers.private` (`db.smithers.private`)
+* 0.168.192.in-addr.arpa - Reverse map zone that specifies how to resolve private ips for `smithers.private` (`db.rev.0.168.192.in-addr.arpa`)
+
+### Logs
+Ensure logging file is present at `/var/cache/bind/log/named/default.log`
+```
+touch /var/cache/bind/log/named/default.log
+sudo chown root:bind /var/cache/bind/log/named/default.log
+sudo chmod 660 /var/cache/bind/log/named/default.log
+```
+
+## Notes
+Additionally, `/etc/bind/named.conf` may be of interest for including other files (out of the scope of this project)
 
 ## Restart BIND9
 ```
 sudo service bind9 restart
-```
-
-## Start BIND9 on boot
-```
-system autostart
 ```
 
 ## Modify Router to use your DNS server
