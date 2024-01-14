@@ -11,9 +11,13 @@ Configure docker to use gcloud authentication
 
 ## Setup your cluster
 For baremetal clusters follow:
-* `docs/baremetal/a00-flatcar.md` and `docs/baremetal/a01-kubeadm` and onwards for the control plane
-* `docs/baremetal/b00-pi.md` and `docs/baremetal/b01-pi-kubenode` and onwards for nodes (on arm devices with raspberry pi OS)
-(Note: Currently missing nodes on flatcarOS)
+* `docs/baremetal/b00-pi.md` to setup a pi
+* `docs/baremetal/b01-dns.md` to modify your pi to be a DNS server using BIND9
+* `docs/baremetal/b01-registry.md` to modify your pi to be a private registry using `distribution/distribution/registry`
+* `docs/baremetal/b01-pi-kubenode` to modify your pi to be a k8s node
+* `docs/baremetal/a00-flatcar.md` to setup a flatcar node
+* `docs/baremetal/a01-kubeadm` and modify your flatcar node to a k8s control plane
+* (Note: Currently missing nodes on flatcarOS)
 * `docs/baremetal/c00-metallb.md` for setting up an implementation of load balancers for services of type `LoadBalancer`
 
 For gcloud follow:

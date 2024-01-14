@@ -36,7 +36,10 @@ https://kubernetes.github.io/ingress-nginx/examples/static-ip/
 
 https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
 
-## Install cert-manager
+If you're using `cert-manager` and `lets-encrypt` for certificate management, go to `Install cert-manager` section.
+If you're using managing certificates manually, go to `Install certificate`
+
+## Install cert-manager (gcp)
 https://cert-manager.io/docs/installation/
 
 * Retrieve the installation yaml from https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml (it should be `./ingress/cert-manager.yaml` in this repo)

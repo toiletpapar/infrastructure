@@ -82,16 +82,18 @@ Now it's time to configure your pi to expose the registry on the private network
 https://distribution.github.io/distribution/about/deploying/#run-an-externally-accessible-registry
 
 For an internally exposed registry, a self-signed cert secured registry should suffice. To begin this process, you must have set up a local DNS (see `baremetal/pi/b01-pi-dns.md`).
-If you followed the DNS docs, then you should have a domain `registry.smithers.private` that points to your registry box. The below makes use of this domain.
+If you followed the DNS docs, then you should have a domain `registry.smithers.private` that points to your registry box. The below makes use of this domain by creating a self-signed wildcard cert.
 
 Make the self-signed certs
 ```
 mkdir -p certs
 openssl req \
   -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key \
-  -addext "subjectAltName = DNS:registry.smithers.private" \
+  -addext "subjectAltName = DNS:*.smithers.private" \
   -x509 -days 365 -out certs/domain.crt
 ```
+
+During certificate genration, it'll ask a series of questions. Ensure the CN is `*.smithers.private`.
 
 Stop the currently running registry
 ```
@@ -122,10 +124,20 @@ cp domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
 
 Windows
 ```
-# You may need to adjust these for the core use or whever the cert is located in the registry box
-scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
+# You may need to additionally generate a subdomain cert for use by windows. This subdomain can be signed by your wildcard cert.
+## Create a new key-pair
+openssl genpkey -algorithm RSA -out subdomain.key
+## When prompted for the Common Name (CN), enter the specific subdomain `registry.smithers.private`
+openssl req -new -key subdomain.key -out subdomain.csr
+## Sign the CSR with the domain's private key
+openssl x509 -req -in subdomain.csr -CA wildcard.crt -CAkey wildcard.key -CAcreateserial -out subdomain.crt
+## Verify the CN
+openssl x509 -text -noout -in subdomain.crt
 
-# Open explorer and click on the cert to add it to the Trusted Root Certificate Authorities store
+# You may need to adjust these for the core user or wherever the cert is located in the registry box
+scp core@registry.smithers.private:/home/core/registry.certs/subdomain.crt registry.smithers.private.crt
+
+# registry.smithers.private.crt should also be added to the Untrusted Certificate store
 ```
 
 At this point you can run the Test section again on client machine and verify that you can reach the registry through `registry.smithers.private`.
