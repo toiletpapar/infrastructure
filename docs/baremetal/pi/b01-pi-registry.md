@@ -116,7 +116,8 @@ https://distribution.github.io/distribution/about/insecure/
 
 Linux
 ```
-cp certs/domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
+scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
+cp domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
 ```
 
 Windows

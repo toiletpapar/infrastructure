@@ -68,3 +68,11 @@ If you're running a single node k8s cluster then `kubeadm` will assign a `node-r
 ```
 kubectl taint nodes localhost node-role.kubernetes.io/control-plane:NoSchedule-
 ```
+
+# Pulling from a private registry
+This project uses `registry.smithers.private` as the private registry for all project images. See `pi/b01-pi-regstiry.md` for details. As a result, you'll need to trust the certificate issued by `registry.smithers.private`.
+
+```
+scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
+cp domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
+```

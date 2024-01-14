@@ -24,25 +24,7 @@ ls /sys/class/net
 ```
 
 Note you'll likely want a static ip for the control plane
-You can use your router's DHCP reservation for this ip
-```
-variant: flatcar
-version: 1.0.0
-storage:
-  files:
-    - path: /etc/systemd/network/00-<<your network interface>>.network
-      contents:
-        inline: |
-          [Match]
-          Name=<<your network interface>>
-
-          [Network]
-          DNS=8.8.8.8
-          Address=<<reserved ip>>/24
-          Gateway=<<router gateway ip>>
-```
-
-If DHCP is acceptable
+You can use your router's DHCP reservation for this 
 ```
 variant: flatcar
 version: 1.0.0
@@ -57,6 +39,25 @@ storage:
           [Network]
           DHCP=yes
 ```
+
+You can also self-assign an ip with the config below
+```
+variant: flatcar
+version: 1.0.0
+storage:
+  files:
+    - path: /etc/systemd/network/00-<<your network interface>>.network
+      contents:
+        inline: |
+          [Match]
+          Name=<<your network interface>>
+
+          [Network]
+          DNS=<<your DNS ip address>>
+          Address=<<reserved ip>>/24
+          Gateway=<<router gateway ip>>
+```
+Note the DNS server used here can be created following the instructions at `pi/b01-pi-dns.md`. Once created, the private ip of the box hosting the DNS server should be placed in the `DNS` field.
 
 Make the appropriate changes to `cl-control.yaml` and `cl-node.yaml` for your particular network interface
 
