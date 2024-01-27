@@ -52,7 +52,7 @@ You can find the configurations in `kubectl-admin-binding.yaml` and `kubectl-adm
 The `admin` user is hard-coded in `kubectl-admin-binding.yaml`.
 
 On the control plane host, add the role and binding:
-`kubetl apply -f kubectl-admin-binding.yaml`
+`kubectl apply -f kubectl-admin-binding.yaml`
 `kubectl apply -f kubectl-admin-role.yaml`
 
 At this point your user should be able to run `kubectl get nodes` on the client
