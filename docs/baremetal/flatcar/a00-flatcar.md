@@ -160,14 +160,36 @@ systemd:
         WantedBy=multi-user.target    
 ```
 
+#### Configure your node's hostname
+This step is used to give your node a human-readable name.
+```
+variant: flatcar
+version: 1.0.0
+systemd:
+  units:
+    - name: hostname.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Change hostname to be human-readable.
+        Before=kubeadm.service
+
+        [Service]
+        Type=oneshot
+        ExecStart=hostnamectl set-hostname <desired hostname>
+
+        [Install]
+        WantedBy=multi-user.target  
+```
+
 ### Install flatcar on the host machine's drive
 Find the Butane config used for the control plane at `docs/baremetal/cl-control.yaml`
 Find the Butane config used for nodes at `docs/baremetal/cl-node.yaml`
 
 You can grab these configs by:
 ```
-wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/cl-control.yaml"
-wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/cl-node.yaml"
+wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/flatcar/cl-control.yaml"
+wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/flatcar/cl-node.yaml"
 ```
 
 Translate the Butane config to an Ignition config
@@ -198,7 +220,7 @@ At this point you should be able to:
 `ssh core@<<node ip address>>`
 
 * Deploy a CNI
-This project uses Calico (v3.24.1)
+This project uses Calico (v3.24.1) [as of Jan 27, 2024]
 `kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml`
 
 * Allow for node reboots on Kubernetes or Flatcar update (via Kured)

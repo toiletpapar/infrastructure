@@ -50,6 +50,19 @@ storage:
           AuthenticationMethods publickey
 systemd:
   units:
+    - name: hostname.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Change hostname to be human-readable.
+        Before=kubeadm.service
+
+        [Service]
+        Type=oneshot
+        ExecStart=hostnamectl set-hostname asuslaptop
+
+        [Install]
+        WantedBy=multi-user.target  
     - name: cpu-governor.service
       enabled: true
       contents: |
