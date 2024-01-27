@@ -67,13 +67,14 @@ https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 By default, `kubeadm` will assign a `node-role.kubernetes.io/control-plane:NoSchedule` taint on your node. If you're running a single node k8s cluster then you will not be able to schedule any workloads on that node. This is intended as running workloads on your control-plane is not recommended. However, if you do not have the resources for more nodes, then you can remove the taint to schedule workloads on the control plane by running:
 
 ```
-kubectl taint nodes localhost node-role.kubernetes.io/control-plane:NoSchedule-
+kubectl taint nodes <nodename> node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
 # Pulling from a private registry
 This project uses `registry.smithers.private` as the private registry for all project images. See `pi/b01-pi-regstiry.md` for details. As a result, you'll need to trust the certificate issued by `registry.smithers.private`.
 
 ```
+# shell on kubeadm node
 scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
 cp domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
 ```

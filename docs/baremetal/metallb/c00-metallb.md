@@ -13,7 +13,7 @@ At this point you should:
 ## Check if port 7946 is open on all nodes in your cluster
 ```
 ssh <<username>>@<<node ip address>> # user is probably core if you used flatcar
-netstat -tuplen
+iptables -L | grep 7946
 ```
 
 ## Installing MetalLB
