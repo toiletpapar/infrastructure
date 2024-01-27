@@ -24,10 +24,13 @@ Ensure that `./smithers-crawler/credentials` is populated with the appropriate c
 
 https://kubernetes.github.io/ingress-nginx/deploy/#environment-specific-instructions
 
+If you're running on a cloud provider, follow the below steps to ensure your load balancer has a static ip for use with your DNS solution
 * Retrieve the IP of your load balancer
 * Promote the IP to a static IP
 * Patch k8s with static IP
 `kubectl patch svc ingress-nginx-controller --namespace ingress-nginx -p '{"spec": {"loadBalancerIP": "xxx.xxx.xxx.xx"}}'`
+
+If you're running baremetal, then you'll likely have configured `metallb` and a DNS through this project for a private network. Therefore, your static ip can be found at `docs/baremetal/metallb/ip-address-pool.yaml` and your DNS will be configured to serve resolve that ip for `api.smithers.private`.
 
 https://kubernetes.github.io/ingress-nginx/examples/static-ip/
 
@@ -65,9 +68,11 @@ For Production:
 `metadata.annotations.cert-manager.io/issuer: "letsencrypt-prod"`
 `kubectl apply -f ./ingress/ingress.yaml`
 
-## Create a certificate automatically with cert-manager
+### Create a certificate automatically with cert-manager
 https://kubernetes.github.io/ingress-nginx/user-guide/tls/
 https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
 
 * At this point, if you've updated your ingress with `metadata.annotations.cert-manager.io/issuer: "letsencrypt-prod"`, removing the secret will retrigger reissuing of the certificate by cert-manager
 `kubectl delete secret tls-secret`
+
+## Install certificate (baremetal)

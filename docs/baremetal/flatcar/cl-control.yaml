@@ -19,6 +19,7 @@ storage:
           Name=enp4s0f1
 
           [Network]
+          DNS=192.168.0.41
           DHCP=yes
     - path: /etc/sysupdate.kubernetes.d/kubernetes.conf
       contents:

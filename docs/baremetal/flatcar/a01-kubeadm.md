@@ -64,7 +64,8 @@ At this point your user should be able to run `kubectl get nodes` on the client
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 
 # Single-node k8s clusters
-If you're running a single node k8s cluster then `kubeadm` will assign a `node-role.kubernetes.io/control-plane:NoSchedule` taint on your node and you will not be able to schedule any workloads on that node. This is intended as running workloads on your control-plane is not recommended. However, if you do not have the resources for more nodes, then you can remove the taint to schedule workloads on the control plane by running:
+By default, `kubeadm` will assign a `node-role.kubernetes.io/control-plane:NoSchedule` taint on your node. If you're running a single node k8s cluster then you will not be able to schedule any workloads on that node. This is intended as running workloads on your control-plane is not recommended. However, if you do not have the resources for more nodes, then you can remove the taint to schedule workloads on the control plane by running:
+
 ```
 kubectl taint nodes localhost node-role.kubernetes.io/control-plane:NoSchedule-
 ```

@@ -128,19 +128,24 @@ Windows
 ## Create a new key-pair
 openssl genpkey -algorithm RSA -out subdomain.key
 ## When prompted for the Common Name (CN), enter the specific subdomain `registry.smithers.private`
-openssl req -new -key subdomain.key -out subdomain.csr
+openssl req -new -days 365 -key subdomain.key -out subdomain.csr
 ## Sign the CSR with the domain's private key
 openssl x509 -req -in subdomain.csr -CA wildcard.crt -CAkey wildcard.key -CAcreateserial -out subdomain.crt
 ## Verify the CN
 openssl x509 -text -noout -in subdomain.crt
 
 # You may need to adjust these for the core user or wherever the cert is located in the registry box
+scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
 scp core@registry.smithers.private:/home/core/registry.certs/subdomain.crt registry.smithers.private.crt
 
+# domain.crt should be added as a Trusted Root CA
 # registry.smithers.private.crt should also be added to the Untrusted Certificate store
+# Restart Docker
 ```
 
 At this point you can run the Test section again on client machine and verify that you can reach the registry through `registry.smithers.private`.
+
+Note that these certificates expire in a year.
 
 ## Stopping the registry
 If you need to clean up your node, you can stop the registry and remove all its data by running the following commands:

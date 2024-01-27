@@ -5,7 +5,7 @@
 * Download Flatcar ISO from drive
 * Burn the image into a drive (possibly using Raspberry Pi Imager)
 * Boot the image via BIOS compatibility mode (not UEFI)
-  - https://www.asus.com/us/support/FAQ/1013017/#A1 for ASUS Laptop
+  - https://www.asus.com/us/support/FAQ/1013017/#A1 for ASUS Laptop (sustain press F2 for BIOS)
 
 At this point, you should be in Flatcar Linux and should be able to run commands
 
@@ -23,6 +23,8 @@ Find your network interface
 ls /sys/class/net
 ```
 
+Note the DNS server used here can be created following the instructions at `pi/b01-pi-dns.md`. Once created, the private ip of the box hosting the DNS server should be placed in the `DNS` field.
+
 Note you'll likely want a static ip for the control plane
 You can use your router's DHCP reservation for this 
 ```
@@ -37,6 +39,7 @@ storage:
           Name=<<your network interface>>
 
           [Network]
+          DNS=<<your DNS ip address>>
           DHCP=yes
 ```
 
@@ -57,7 +60,6 @@ storage:
           Address=<<reserved ip>>/24
           Gateway=<<router gateway ip>>
 ```
-Note the DNS server used here can be created following the instructions at `pi/b01-pi-dns.md`. Once created, the private ip of the box hosting the DNS server should be placed in the `DNS` field.
 
 Make the appropriate changes to `cl-control.yaml` and `cl-node.yaml` for your particular network interface
 
@@ -171,10 +173,10 @@ wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main
 Translate the Butane config to an Ignition config
 ```
 # Control Plane
-cat cl-control.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition.json
+cat cl-control.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition-control.json
 
 # Nodes
-cat cl-node.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition.json
+cat cl-node.yaml | docker run --rm -i quay.io/coreos/butane:latest > ignition-node.json
 ```
 
 Find the drive you want to install it to, likely `/dev/sda`
@@ -184,7 +186,7 @@ lsblk
 
 Run the installation script
 ```
-flatcar-install -d /dev/sda -i ignition.json -C stable
+flatcar-install -d /dev/sda -i ignition-<control|node>.json -C stable
 ```
 
 At this point flatcar should be bootable from the host's disk. It is now safe to reboot the host and remove the boot drive.
@@ -207,7 +209,7 @@ kubectl apply -f "https://github.com/kubereboot/kured/releases/download/$latest/
 
 At this point, the k8s control plane should be in the "Ready" state. You can verify this by running `kubectl get nodes`
 
-### (TODO) Modify the control plane to allow for authorized access to Artifact Repository
+### Modify the control plane to allow for authorized access to Artifact Repository (gcp)
 https://www.flatcar.org/docs/latest/container-runtimes/registry-authentication/
 
 At this point, k8s should be able to pull images from Artifact Repository
