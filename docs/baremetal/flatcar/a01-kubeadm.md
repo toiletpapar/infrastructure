@@ -1,5 +1,15 @@
 Tips to manage your k8s cluster (kubeadm)
 
+# Deploy CNI on the control plane
+At this point you should be able to:
+
+* SSH into the machine
+`ssh core@<<node ip address>>`
+
+* Deploy a CNI
+This project uses Calico (v3.24.1) [as of Jan 27, 2024]
+`kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml`
+
 # Certificates
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/
 
@@ -68,13 +78,4 @@ By default, `kubeadm` will assign a `node-role.kubernetes.io/control-plane:NoSch
 
 ```
 kubectl taint nodes <nodename> node-role.kubernetes.io/control-plane:NoSchedule-
-```
-
-# Pulling from a private registry
-This project uses `registry.smithers.private` as the private registry for all project images. See `pi/b01-pi-regstiry.md` for details. As a result, you'll need to trust the certificate issued by `registry.smithers.private`.
-
-```
-# shell on kubeadm node
-scp core@registry.smithers.private:/home/core/certs/domain.crt domain.crt
-cp domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
 ```

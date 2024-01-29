@@ -213,16 +213,7 @@ flatcar-install -d /dev/sda -i ignition-<control|node>.json -C stable
 
 At this point flatcar should be bootable from the host's disk. It is now safe to reboot the host and remove the boot drive.
 
-### Deploy CNI on the control plane
-At this point you should be able to:
-
-* SSH into the machine
-`ssh core@<<node ip address>>`
-
-* Deploy a CNI
-This project uses Calico (v3.24.1) [as of Jan 27, 2024]
-`kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml`
-
+### Allow node reboots for updates
 * Allow for node reboots on Kubernetes or Flatcar update (via Kured)
 ```
 latest=$(curl -s https://api.github.com/repos/kubereboot/kured/releases | jq -r '.[0].tag_name')
@@ -232,9 +223,27 @@ kubectl apply -f "https://github.com/kubereboot/kured/releases/download/$latest/
 At this point, the k8s control plane should be in the "Ready" state. You can verify this by running `kubectl get nodes`
 
 ### Modify the control plane to allow for authorized access to Artifact Repository (gcp)
-https://www.flatcar.org/docs/latest/container-runtimes/registry-authentication/
+If you use GCP Artifcat Repository for your images, see https://www.flatcar.org/docs/latest/container-runtimes/registry-authentication/
 
 At this point, k8s should be able to pull images from Artifact Repository
+
+### Add custom CA to the node (private registry)
+This project uses `registry.smithers.private` as the internal private registry for all project images. This registry uses a self-signed certificate. As a result, you'll need to trust the CA that issued the cert for `registry.smithers.private`. See `pi/b01-pi-regstiry.md` for details on the registry implementation. See https://www.flatcar.org/docs/latest/setup/security/adding-certificate-authorities/ for trusting custom CAs in Flatcar.
+
+```
+# shell on kubeadm node
+scp core@ns1.smithers.private:/home/core/certs/domain.crt domain.crt
+cp domain.crt /etc/docker/certs.d/registry.smithers.private/ca.crt
+
+# if your crt is in pem format already, otherwise you'll need to convert it into a pem format
+cp domain.crt /etc/ssl/certs/ca.pem 
+
+# update
+update-ca-certificates
+
+# get containerd to pick it up
+sudo systemctl restart containerd.service
+```
 
 ### Customize your k8s cluster
 For k8 cluster customization used in this project, see kubeadm.md
