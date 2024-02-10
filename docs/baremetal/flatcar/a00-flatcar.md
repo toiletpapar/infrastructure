@@ -186,6 +186,7 @@ systemd:
 https://coreos.github.io/butane/config-flatcar-v1_0/
 https://www.flatcar.org/docs/latest/provisioning/ignition/specification/
 https://www.flatcar.org/docs/latest/setup/storage/mounting-storage/
+https://www.flatcar.org/docs/latest/reference/developer-guides/sdk-disk-partitions/
 
 This step is used to parition the disks in your node so that they can be provisioned as local persistant volumes. These workloads require persistant storage:
 * PSQL Database for Smithers Application
@@ -202,9 +203,12 @@ storage:
     - device: /dev/sda
       wipe_table: false
       partitions:
-        - number: 0
+        - number: 9
+          label: root
+          size_mib: 409600
+        - number: 10
           label: data
-          size_mib: 286102
+          size_mib: 0
   filesystems:
     - path: /data
       device: /dev/disk/by-partlabel/data

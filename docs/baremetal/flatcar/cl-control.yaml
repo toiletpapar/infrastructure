@@ -15,9 +15,12 @@ storage:
     - device: /dev/sda
       wipe_table: false
       partitions:
-        - number: 0
+        - number: 9
+          label: root
+          size_mib: 409600
+        - number: 10
           label: data
-          size_mib: 286102
+          size_mib: 0
   filesystems:
     - path: /data
       device: /dev/disk/by-partlabel/data
