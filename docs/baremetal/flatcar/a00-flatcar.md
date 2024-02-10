@@ -182,7 +182,39 @@ systemd:
         WantedBy=multi-user.target  
 ```
 
-The above will provision a 300 GB partition on the first disk for the root directory, formatted as ext4 and mounted at /data. The current project modified `cl-control.yaml` because it's only a one node cluster.
+#### (Optional) Partition your drive
+https://coreos.github.io/butane/config-flatcar-v1_0/
+https://www.flatcar.org/docs/latest/provisioning/ignition/specification/
+https://www.flatcar.org/docs/latest/setup/storage/mounting-storage/
+
+This step is used to parition the disks in your node so that they can be provisioned as local persistant volumes. These workloads require persistant storage:
+* PSQL Database for Smithers Application
+
+These workloads require ephemeral storage:
+* Smithers Application Server
+* Smithers Crawler Job
+
+```
+variant: flatcar
+version: 1.0.0
+storage:
+  disks:
+    - device: /dev/sda
+      wipe_table: false
+      partitions:
+        - number: 0
+          label: data
+          start: 1MB
+          size: -8192MB
+
+  filesystems:
+    - path: /var
+      device: /dev/disk/by-partlabel/var
+      format: btrfs
+      wipe_filesystem: true
+      label: var
+      with_mount_unit: true
+```
 
 ### Install flatcar on the host machine's drive
 Find the Butane config used for the control plane at `docs/baremetal/cl-control.yaml`

@@ -82,7 +82,9 @@ https://kubernetes.io/docs/concepts/storage/volumes/#local
 https://kubernetes.io/docs/concepts/storage/storage-classes/#local
 https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/
 
-...TODO
+Prerequisites: Your drive should be partitioned for the volumes you want to provision. If you've done the optional partitioning step in `a00-flatcar.md` then you have fulfilled this prerequisite.
+
+
 
 # Upgrades
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
