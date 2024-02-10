@@ -76,3 +76,4 @@ https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
 `kubectl delete secret tls-secret`
 
 ## Install certificate (baremetal)
+TBD

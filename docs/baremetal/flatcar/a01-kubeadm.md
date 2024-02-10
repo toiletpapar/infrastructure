@@ -67,8 +67,24 @@ On the control plane host, add the role and binding:
 
 At this point your user should be able to run `kubectl get nodes` on the client
 
-# Verify systemd cgroupdriver and other settings
+# Verify that the cgroupdriver is systemd and other settings
 `kubectl describe cm kubelet-config -n kube-system`
+
+# Storage
+There are two ways this project will provision peristant volumes: local node storage or NAS (future). As of this comment, only instructions for local storage provisioning are provided.
+
+## NAS
+TBD
+
+## Local Storage
+https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/getting-started.md#option-3-baremetal-environments
+https://kubernetes.io/docs/concepts/storage/volumes/#local
+https://kubernetes.io/docs/concepts/storage/storage-classes/#local
+https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/
+
+Prerequisites: Your drive should be partitioned for the volumes you want to provision. If you've done the optional partitioning step in `a00-flatcar.md` then you have fulfilled this prerequisite.
+
+...TODO
 
 # Upgrades
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
