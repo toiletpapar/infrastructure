@@ -18,6 +18,7 @@ storage:
         - number: 9
           label: ROOT
           size_mib: 409600
+          resize: true
         - number: 10
           label: data
           size_mib: 0

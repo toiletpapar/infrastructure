@@ -219,6 +219,9 @@ storage:
 ```
 
 ### Install flatcar on the host machine's drive
+IMPORTANT: The configs provided in this project work for my hardware. Your hardware may differ and require additional tweaks. Please exercise caution. Of note:
+- I partitioned my disk to fit my node, not necessarily the hardware requirements of the project.
+
 Find the Butane config used for the control plane at `docs/baremetal/cl-control.yaml`
 Find the Butane config used for nodes at `docs/baremetal/cl-node.yaml`
 
