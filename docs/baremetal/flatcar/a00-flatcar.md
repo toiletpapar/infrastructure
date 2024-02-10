@@ -204,15 +204,13 @@ storage:
       partitions:
         - number: 0
           label: data
-          start: 1MB
-          size: -8192MB
-
+          size_mib: 286102
   filesystems:
-    - path: /var
-      device: /dev/disk/by-partlabel/var
-      format: btrfs
+    - path: /data
+      device: /dev/disk/by-partlabel/data
+      format: ext4
       wipe_filesystem: true
-      label: var
+      label: data
       with_mount_unit: true
 ```
 
