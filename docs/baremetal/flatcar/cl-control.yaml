@@ -11,13 +11,6 @@ storage:
     - target: /opt/extensions/kubernetes/kubernetes-v1.27.4-x86-64.raw
       path: /etc/extensions/kubernetes.raw
       hard: false
-  disks:
-    - device: /dev/disk/by-partlabel/root
-      wipe_table: false
-      partitions:
-        - number: 9
-          size_mib: 286102
-          resize: true
   files:
     - path: /etc/systemd/network/00-enp4s0f1.network
       contents:
