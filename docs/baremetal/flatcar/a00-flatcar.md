@@ -200,22 +200,15 @@ variant: flatcar
 version: 1.0.0
 storage:
   disks:
-    - device: /dev/sda
+    - device: /dev/disk/by-partlabel/root
       wipe_table: false
       partitions:
-        - number: 0
-          label: data
+        - number: 9
           size_mib: 286102
-  filesystems:
-    - path: /data
-      device: /dev/disk/by-partlabel/data
-      format: ext4
-      wipe_filesystem: true
-      label: data
-      with_mount_unit: true
+          resize: true
 ```
 
-The above will provision a 300 GB partition on the first disk, formatted as ext4 and mounted at /data. The current project modified `cl-control.yaml` because it's only a one node cluster.
+The above will provision a 300 GB partition on the first disk for the root directory, formatted as ext4 and mounted at /data. The current project modified `cl-control.yaml` because it's only a one node cluster.
 
 ### Install flatcar on the host machine's drive
 Find the Butane config used for the control plane at `docs/baremetal/cl-control.yaml`

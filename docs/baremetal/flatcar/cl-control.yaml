@@ -12,19 +12,12 @@ storage:
       path: /etc/extensions/kubernetes.raw
       hard: false
   disks:
-    - device: /dev/sda
+    - device: /dev/disk/by-partlabel/root
       wipe_table: false
       partitions:
-        - number: 0
-          label: data
+        - number: 9
           size_mib: 286102
-  filesystems:
-    - path: /data
-      device: /dev/disk/by-partlabel/data
-      format: ext4
-      wipe_filesystem: true
-      label: data
-      with_mount_unit: true
+          resize: true
   files:
     - path: /etc/systemd/network/00-enp4s0f1.network
       contents:
