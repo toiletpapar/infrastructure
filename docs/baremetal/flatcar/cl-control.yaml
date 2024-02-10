@@ -16,7 +16,7 @@ storage:
       wipe_table: false
       partitions:
         - number: 9
-          label: root
+          label: ROOT
           size_mib: 409600
         - number: 10
           label: data
