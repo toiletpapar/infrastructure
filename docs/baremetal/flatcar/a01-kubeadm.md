@@ -72,46 +72,8 @@ On the control plane host, add the role and binding:
 
 At this point your user should be able to run `kubectl get nodes` on the client
 
-# Using Helm
-This project will assume a local helm installation going forward. Helm is a Kubernetes package manager. Get more details about helm here:
-https://helm.sh/docs/intro/install/
-https://helm.sh/docs/intro/using_helm/
-
 # Verify that the cgroupdriver is systemd and other settings
 `kubectl describe cm kubelet-config -n kube-system`
-
-# Storage
-There are two ways this project will provision peristant volumes: local node storage or NAS (future). As of this comment, only instructions for local storage provisioning are provided.
-
-## NAS
-TBD
-
-## Local Storage
-https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/getting-started.md
-https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#create-a-directory-for-provisioner-discovering
-https://kubernetes.io/docs/concepts/storage/volumes/#local
-https://kubernetes.io/docs/concepts/storage/storage-classes/#local
-https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/
-
-Prerequisites: Your drive should be partitioned for the volumes you want to provision (this provides capacity isolation). If you've done the optional partitioning step in `a00-flatcar.md` then you have fulfilled this prerequisite.
-
-We'll use the local static provisioner to help manage the lifecycle of local persistant volumes.
-
-Create a StorageClass with `volumeBindingMode` set to `WaitForFirstConsumer` to delay volume binding until pod scheduling to handle multiple local PVs in a single pod.
-`kubectl create -f docs/baremetal/flatcar/fast-disks-data.yaml`
-
-This project has customized the local provisioner at `docs/baremetal/flatcar/local-static-provision-values.yaml`. At a high-level, the following customizations were made:
-* Added a storage class that specifies which partition to use and the mount path
-
-Add local static provison repo to helm:
-`helm repo add sig-storage-local-static-provisioner https://kubernetes-sigs.github.io/sig-storage-local-static-provisioner`
-
-Install
-`helm install sig-storage-local-static-provisioner/local-static-provisioner -f ./docs/baremetal/flatcar/local-static-provisioner-values.yaml`
-
-Verify that local-volume-provisioner and the `fast-disks-data` pv were created successfully
-`helm list -A`
-`kubectl get pv`
 
 # Upgrades
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/

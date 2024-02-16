@@ -182,6 +182,8 @@ systemd:
         WantedBy=multi-user.target  
 ```
 
+Ensure each node has a unique name to reduce conflict when using local storage and for assisting in troubleshooting
+
 #### (Optional) Partition your drive
 https://coreos.github.io/butane/config-flatcar-v1_0/
 https://www.flatcar.org/docs/latest/provisioning/ignition/specification/

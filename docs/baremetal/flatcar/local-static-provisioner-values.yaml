@@ -1,8 +1,11 @@
 # Configuration for classes of static volumes.
 classes:
-  - name: fast-disks-data
-    hostDir: /mnt/disks/data
-    mountDir: /mnt/data
+  # the name of local storage class
+  - name: local-storage
+    # path to the directory of local volumes (discovery directory)
+    hostDir: /mnt/disks
+    # the mount path of host directory in provisioner pod
+    mountDir: /mnt/disks
     volumeMode: Filesystem
     namePattern: "*"
     allowedTopologies:
