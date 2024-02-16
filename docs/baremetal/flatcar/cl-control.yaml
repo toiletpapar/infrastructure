@@ -28,7 +28,6 @@ storage:
       format: ext4
       wipe_filesystem: true
       label: ROOT
-      with_mount_unit: true
     - path: /mnt/disks/data
       device: /dev/disk/by-partlabel/data
       format: ext4
