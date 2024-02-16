@@ -11,28 +11,28 @@ storage:
     - target: /opt/extensions/kubernetes/kubernetes-v1.29.1-x86-64.raw
       path: /etc/extensions/kubernetes.raw
       hard: false
-  # disks:
-  #   - device: /dev/sda
-  #     wipe_table: false
-  #     partitions:
-  #       - number: 9
-  #         label: ROOT
-  #         size_mib: 409600
-  #         resize: true
-  #       - number: 10
-  #         label: data
-  #         size_mib: 0
-  # filesystems:
-  #   - device: /dev/disk/by-partlabel/ROOT
-  #     format: ext4
-  #     wipe_filesystem: true
-  #     label: ROOT
-  #   - path: /mnt/disks/data
-  #     device: /dev/disk/by-partlabel/data
-  #     format: ext4
-  #     wipe_filesystem: true
-  #     label: data
-  #     with_mount_unit: true
+  disks:
+    - device: /dev/sda
+      wipe_table: false
+      partitions:
+        - number: 9
+          label: ROOT
+          size_mib: 409600
+          resize: true
+        - number: 10
+          label: data
+          size_mib: 0
+  filesystems:
+    - device: /dev/disk/by-partlabel/ROOT
+      format: ext4
+      wipe_filesystem: true
+      label: ROOT
+    - path: /mnt/disks/data
+      device: /dev/disk/by-partlabel/data
+      format: ext4
+      wipe_filesystem: true
+      label: data
+      with_mount_unit: true
   files:
     - path: /etc/systemd/network/00-enp4s0f1.network
       contents:
