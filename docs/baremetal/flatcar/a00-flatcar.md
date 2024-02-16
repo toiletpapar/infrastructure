@@ -211,8 +211,7 @@ storage:
           label: data
           size_mib: 0
   filesystems:
-    - path: /
-      device: /dev/disk/by-partlabel/ROOT
+    - device: /dev/disk/by-partlabel/ROOT
       format: ext4
       wipe_filesystem: true
       label: ROOT
