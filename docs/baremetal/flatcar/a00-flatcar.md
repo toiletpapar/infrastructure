@@ -204,19 +204,28 @@ storage:
       wipe_table: false
       partitions:
         - number: 9
-          label: root
+          label: ROOT
           size_mib: 409600
+          resize: true
         - number: 10
           label: data
           size_mib: 0
   filesystems:
-    - path: /data
+    - path: /
+      device: /dev/disk/by-partlabel/ROOT
+      format: ext4
+      wipe_filesystem: true
+      label: ROOT
+      with_mount_unit: true
+    - path: /mnt/disks/data
       device: /dev/disk/by-partlabel/data
       format: ext4
       wipe_filesystem: true
       label: data
       with_mount_unit: true
 ```
+
+This will resize the disk that flatcar linux will likely be installed to, `dev/sda`. This will resize the ROOT partition and let the data partition take the rest of the available space. If you have a second storage device, consider creating partitions there instead of the device that contains flatcar linux.
 
 ### Install flatcar on the host machine's drive
 IMPORTANT: The configs provided in this project work for my hardware. Your hardware may differ and require additional tweaks. Please exercise caution. Of note:
@@ -251,6 +260,7 @@ flatcar-install -d /dev/sda -i ignition-<control|node>.json -C stable
 ```
 
 At this point flatcar should be bootable from the host's disk. It is now safe to reboot the host and remove the boot drive.
+The node should also be reachable via SSH
 
 ### Allow node reboots for updates
 * Allow for node reboots on Kubernetes or Flatcar update (via Kured)

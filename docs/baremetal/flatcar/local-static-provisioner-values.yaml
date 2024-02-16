@@ -1,0 +1,11 @@
+# Configuration for classes of static volumes.
+classes:
+  - name: fast-disks-data
+    hostDir: /mnt/disks/data
+    mountDir: /mnt/data
+    volumeMode: Filesystem
+    namePattern: "*"
+    allowedTopologies:
+    blockCleanerCommand:
+      - "/scripts/shred.sh"
+      - "2"

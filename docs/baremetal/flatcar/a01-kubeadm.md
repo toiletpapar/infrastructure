@@ -50,10 +50,13 @@ controlPlaneEndpoint: "<<static ip of control plane, see flatcar.md#configure-a-
 certificatesDir: "/etc/kubernetes/pki"
 ```
 
+Retrieve the config from this project (with the modifications you've made above)
+`wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/flatcar/kubeadm-user.yaml"`
+
 Generate the kubeconfig (it'll print in stdout)
 `sudo kubeadm kubeconfig user --config kubeadm-user.yaml --client-name admin`
 
-At this point you can use this .kube/config to access this cluster with user `admin`
+At this point you can use this .kube/config to access this cluster with user `admin` (but you won't have any permissions)
 
 # Adding permissions to the user
 In this project, we use ClusterRole and ClusterRoleBinding to allow read/write access to all resources in all namespaces.
@@ -62,10 +65,17 @@ You can find the configurations in `kubectl-admin-binding.yaml` and `kubectl-adm
 The `admin` user is hard-coded in `kubectl-admin-binding.yaml`.
 
 On the control plane host, add the role and binding:
+`wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/flatcar/kubectl-admin-binding.yaml"`
 `kubectl apply -f kubectl-admin-binding.yaml`
+`wget "https://raw.githubusercontent.com/toiletpapar/smithers-infrastructure/main/docs/baremetal/flatcar/kubectl-admin-role.yaml"`
 `kubectl apply -f kubectl-admin-role.yaml`
 
 At this point your user should be able to run `kubectl get nodes` on the client
+
+# Using Helm
+This project will assume a local helm installation going forward. Helm is a Kubernetes package manager. Get more details about helm here:
+https://helm.sh/docs/intro/install/
+https://helm.sh/docs/intro/using_helm/
 
 # Verify that the cgroupdriver is systemd and other settings
 `kubectl describe cm kubelet-config -n kube-system`
@@ -77,14 +87,31 @@ There are two ways this project will provision peristant volumes: local node sto
 TBD
 
 ## Local Storage
-https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/getting-started.md#option-3-baremetal-environments
+https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/getting-started.md
+https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#create-a-directory-for-provisioner-discovering
 https://kubernetes.io/docs/concepts/storage/volumes/#local
 https://kubernetes.io/docs/concepts/storage/storage-classes/#local
 https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/
 
-Prerequisites: Your drive should be partitioned for the volumes you want to provision. If you've done the optional partitioning step in `a00-flatcar.md` then you have fulfilled this prerequisite.
+Prerequisites: Your drive should be partitioned for the volumes you want to provision (this provides capacity isolation). If you've done the optional partitioning step in `a00-flatcar.md` then you have fulfilled this prerequisite.
 
+We'll use the local static provisioner to help manage the lifecycle of local persistant volumes.
 
+Create a StorageClass with `volumeBindingMode` set to `WaitForFirstConsumer` to delay volume binding until pod scheduling to handle multiple local PVs in a single pod.
+`kubectl create -f docs/baremetal/flatcar/fast-disks-data.yaml`
+
+This project has customized the local provisioner at `docs/baremetal/flatcar/local-static-provision-values.yaml`. At a high-level, the following customizations were made:
+* Added a storage class that specifies which partition to use and the mount path
+
+Add local static provison repo to helm:
+`helm repo add sig-storage-local-static-provisioner https://kubernetes-sigs.github.io/sig-storage-local-static-provisioner`
+
+Install
+`helm install sig-storage-local-static-provisioner/local-static-provisioner -f ./docs/baremetal/flatcar/local-static-provisioner-values.yaml`
+
+Verify that local-volume-provisioner and the `fast-disks-data` pv were created successfully
+`helm list -A`
+`kubectl get pv`
 
 # Upgrades
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
