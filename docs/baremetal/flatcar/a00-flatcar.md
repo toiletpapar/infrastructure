@@ -254,7 +254,7 @@ lsblk
 
 Run the installation script
 ```
-flatcar-install -d /dev/sda -i ignition-<control|node>.json -C stable
+sudo flatcar-install -d /dev/sda -i ignition-<control|node>.json -C stable
 ```
 
 At this point flatcar should be bootable from the host's disk. It is now safe to reboot the host and remove the boot drive.
