@@ -9,7 +9,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # GCP
 # CONNSTR=$(gcloud secrets versions access latest --secret=production-psql)
 # Baremetal
-CONNSTR=$(cat ../secrets/baremetal/credentials/production-psql)
+CONNSTR=$(cat $SCRIPT_DIR/../secrets/baremetal/credentials/production-psql)
 
 USERNAME=$(echo $CONNSTR | cut -d '/' -f 3 | cut -d '@' -f 1 | cut -d ':' -f 1)
 PASSWORD=$(echo $CONNSTR | cut -d '/' -f 3 | cut -d '@' -f 1 | cut -d ':' -f 2)
