@@ -24,6 +24,9 @@ Verify secrets were successfully created by running `kubectl get secrets`
 For HA-psql cluster see
 https://cloud.google.com/kubernetes-engine/docs/tutorials/stateful-workloads/postgresql#deploy-postgresql
 
+Check that you can access your psql server (for example, using port forwarding)
+`kubectl port-forward service/postgresql-db-service 5432:5432`
+
 ## Deploy server
 Ensure that `./smithers-server/credentials` is populated with the appropriate credentials for gcloud
 `kubectl apply -f ./smithers-server/smithers-deployment.yaml`
