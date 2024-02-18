@@ -27,13 +27,31 @@ https://cloud.google.com/kubernetes-engine/docs/tutorials/stateful-workloads/pos
 Check that you can access your psql server (for example, using port forwarding)
 `kubectl port-forward service/postgresql-db-service 5432:5432`
 
+### Cleanup
+In this project, I set the PV reclaim policy to retain so that you can decide whether to keep the data or wipe it during cleanup.
+Remove the statefulset
+`kubectl delete -f psql/psql-statefulset.yaml`
+
+Remove the claim
+`kubectl get pvc`
+`kubectl delete pvc <name of pvc for postgresql-db-disk>`
+
+Reclaim the drive manually. If you're using GCP and their dynamic provisioner, this will delete all the data in the drive and remove the pv. If you're using baremetal with the local provisioner, this will not wipe the drive and a new pv will automatically become available.
+`kubectl get pv`
+`kubectl delete pv <name of pv for postgresql-db-disk>`
+
 ## Deploy server
-Ensure that `./smithers-server/credentials` is populated with the appropriate credentials for gcloud
+Ensure that `./smithers-server/credentials` is populated with the appropriate credentials for gcloud. You must have the following APIs enabled for the following hardware environments:
+Vision (GCP/baremetal)
+Secret Manager (GCP)
+
 `kubectl apply -f ./smithers-server/smithers-deployment.yaml`
 `kubectl apply -f ./smithers-server/smithers-service.yaml`
 
 ## Deploy crawler
-Ensure that `./smithers-crawler/credentials` is populated with the appropriate credentials for gcloud
+Ensure that `./smithers-server/credentials` is populated with the appropriate credentials for gcloud. You must have the following APIs enabled for the following hardware environments:
+Secret Manager (GCP)
+
 `kubectl apply -f ./smithers-crawler/smithers-cron.yaml`
 
 ## Deploy Ingress, Ingress Controller
