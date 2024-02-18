@@ -1,8 +1,25 @@
+## Setting up secrets
+The following secrets are used in this project:
+* production-psql - The connection string used by the smithers deployment to talk to the internal 
+
+### GCP
+Read `docs/gcloud/a01-gke.md` for details on managing secrets with gcp secret manager
+
+### Baremetal
+Create the following folders under the `secrets/baremetal` directory:
+* `credentials` - This will house all your secrets in lieu of an external secret manager.
+* `k8s` - This will be where your secret files will live
+
+Create a file for every secret listed above and put your secret in there. Example:
+production-psql -> `secrets/baremetal/credentials/production-psql`.
+
+Run `secrets/baremetal/make-secrets.sh` to create secret files and apply them to your k8 cluster. The secrets are named the same as above (e.g. `production-psql`)
+
+Verify secrets were successfully created by running `kubectl get secrets`
+
 ## Deploy single node PSQL server
 `kubectl apply -f ./psql/psql-statefulset.yaml`
 `kubectl apply -f ./psql/psql-service.yaml`
-
-Currently configured with low-resources, increase as required.
 
 For HA-psql cluster see
 https://cloud.google.com/kubernetes-engine/docs/tutorials/stateful-workloads/postgresql#deploy-postgresql

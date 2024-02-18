@@ -14,10 +14,9 @@ For baremetal clusters follow:
 * `docs/baremetal/b00-pi.md` to setup a pi
 * `docs/baremetal/b01-dns.md` to modify your pi to be a DNS server using BIND9
 * `docs/baremetal/b01-registry.md` to modify your pi to be a private registry using `distribution/distribution/registry`
-* `docs/baremetal/b01-pi-kubenode` to modify your pi to be a k8s node
 * `docs/baremetal/a00-flatcar.md` to setup a flatcar node
 * `docs/baremetal/a01-kubeadm` and modify your flatcar node to a k8s control plane
-* (Note: Currently missing nodes on flatcarOS)
+* `docs/baremetal/a02-kubectl` to further modify any k8s node
 * `docs/baremetal/c00-metallb.md` for setting up an implementation of load balancers for services of type `LoadBalancer`
 
 For gcloud follow:

@@ -12,11 +12,11 @@ https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubect
 * Create a service account in gcloud and gke with appropriate permissions
 * Bind both service accounts together
 
-k8s resources in `./secrets`
-`kubectl apply -f ./secrets/secrets-serviceaccount.yaml`
+k8s resources in `secrets/gcp`
+`kubectl apply -f secrets/gcp/secrets-serviceaccount.yaml`
 
 Test
-`kubectl apply -f ./secrets/test-secrets-pod.yaml`
+`kubectl apply -f secrets/gcp/test-secrets-pod.yaml`
 `kubectl exec -it readonly-test --namespace=readonly-ns -- /bin/bash`
 `gcloud secrets versions access 1 --secret=local-psql`
 `exit`

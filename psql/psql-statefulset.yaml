@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: postgresql-db
-          image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.7
+          # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.7
+          image: registry.smithers.private/smithers-psql:1.0
           volumeMounts:
           - name: postgresql-db-disk
             mountPath: /data
@@ -31,8 +32,10 @@ spec:
   - metadata:
       name: postgresql-db-disk
     spec:
-      storageClassName: pd-standard
+      # storageClassName: pd-standard
+      storageClassName: local-storage
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: 15Gi
+          # storage: 15Gi
+          storage: 260Gi
