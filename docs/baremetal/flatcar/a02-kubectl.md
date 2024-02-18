@@ -18,7 +18,7 @@ Prerequisites: Your drive should be partitioned for the volumes you want to prov
 
 We'll use the local static provisioner to help manage the lifecycle of local persistant volumes. That is:
 * Each k8s storage class is represented by a "discovery directory" on every node (In this project, that directory is `/mnt/disks` for the `local-storage` class and is specified by the `classes[].hostDir` property in `local-static-provisioner-values.yaml`)
-* A PV volume is created by the provisioner for every sub-directory in the "discovery directory". These subdirectories should be bind mounted to the "discovery directory" for PVs to be created (see https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/76b022f7dbb48757f19ee11f31f91ab19b938407/docs/faqs.md#why-i-need-to-bind-mount-normal-directories-to-create-pvs-for-them). In this project, we created a partition that was mounted at `/mnt/disks/data`.
+* A PV volume is created by the provisioner for every sub-directory in the "discovery directory". These subdirectories should be bind mounted to the "discovery directory" for PVs to be created (see https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/76b022f7dbb48757f19ee11f31f91ab19b938407/docs/faqs.md#why-i-need-to-bind-mount-normal-directories-to-create-pvs-for-them). In this project, we created a partition that was mounted at `/mnt/disks/data` (see `filesystems` property of the flatcar butane configuration for details on the partition).
 * You can use these volumes via their storage classes as normal
 * (Optional) Clean up PVCs and PVs when nodes are deleted (and therefore local PVs unreachable). See https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/76b022f7dbb48757f19ee11f31f91ab19b938407/docs/node-cleanup-controller.md
 * Cleaning up PVs after use. Storage classes with `reclaimPolicy: Delete` should normally delete the data and allow the PV to be relcaimed. Exceptions exist here (see https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/76b022f7dbb48757f19ee11f31f91ab19b938407/docs/faqs.md#pv-with-delete-reclaimpolicy-is-released-but-not-going-to-be-reclaimed)
@@ -38,3 +38,5 @@ Install
 Verify that local-volume-provisioner and pvs were created successfully
 `helm list -A`
 `kubectl get pv`
+
+Additionally, ensure that the drive is empty. You'll likely find a `lost+found` you'll need to deal with after doing a fresh install of flatcar.
