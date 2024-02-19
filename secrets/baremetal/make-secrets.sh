@@ -14,5 +14,6 @@ type: Opaque
 data:
   $NAME: $BASE64" > \
   $SCRIPT_DIR/k8s/$NAME.yaml
+  
   kubectl apply -f $SCRIPT_DIR/k8s/$NAME.yaml
 done
