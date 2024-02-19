@@ -24,5 +24,7 @@ Test
 
 https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secrets
 
+Now you can adjust the docker exec script to set the right ENV variables before starting their workload.
+
 ## Add HDD storage class for gcloud
 `kubectl apply -f ./gcloud/pd-standard-class.yaml`

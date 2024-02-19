@@ -1,6 +1,7 @@
 ## Setting up secrets
 The following secrets are used in this project:
 * production-psql - The connection string used by the smithers deployment to talk to the internal 
+* production-session-key - The secret used to sign session tokens
 
 ### GCP
 Read `docs/gcloud/a01-gke.md` for details on managing secrets with gcp secret manager

@@ -1,7 +1,9 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-NAMES=("production-psql")
+NAMES="production-psql production-session-key"
 for NAME in $NAMES
 do
+  echo "Processing $NAME"
+
   BASE64=$(cat $SCRIPT_DIR/credentials/$NAME | base64 -w 0)
   echo -e "\
 apiVersion: v1
