@@ -34,7 +34,7 @@ echo "Building docker image"
 # IMAGE_NAME=us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.7
 
 # Baremetal
-IMAGE_NAME=registry.smithers.private/smithers-psql:1.0
+IMAGE_NAME=registry.smithers.private/smithers-psql:1.1
 
 GIT_URL=https://github.com/toiletpapar/smithers-server.git
 docker buildx build -t $IMAGE_NAME --no-cache --build-context repo=$GIT_URL $SCRIPT_DIR

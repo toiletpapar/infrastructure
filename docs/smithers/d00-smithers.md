@@ -8,7 +8,7 @@ Read `docs/gcloud/a01-gke.md` for details on managing secrets with gcp secret ma
 
 ### Baremetal
 Create the following folders under the `secrets/baremetal` directory:
-* `credentials` - This will house all your secrets in lieu of an external secret manager.
+* `credentials` - This will house all your secrets in lieu of an external secret manager. Store as `filename=name of secret` and `
 * `k8s` - This will be where your secret files will live
 
 Create a file for every secret listed above and put your secret in there. Example:
@@ -19,6 +19,7 @@ Run `secrets/baremetal/make-secrets.sh` to create secret files and apply them to
 Verify secrets were successfully created by running `kubectl get secrets`
 
 ## Deploy single node PSQL server
+Run `./psql/build.sh` and push the resulting image
 `kubectl apply -f ./psql/psql-statefulset.yaml`
 `kubectl apply -f ./psql/psql-service.yaml`
 

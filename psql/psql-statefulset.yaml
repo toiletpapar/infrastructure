@@ -17,7 +17,7 @@ spec:
       containers:
         - name: postgresql-db
           # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-psql:1.7
-          image: registry.smithers.private/smithers-psql:1.0
+          image: registry.smithers.private/smithers-psql:1.1
           imagePullPolicy: Always
           volumeMounts:
           - name: postgresql-db-disk
