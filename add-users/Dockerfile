@@ -5,13 +5,13 @@ COPY --from=repo . /smithers-server
 WORKDIR /smithers-server
 
 # Copy credentials
-COPY ./credentials/gcloud.json ./credentials/gcloud.json
+# COPY ./credentials/gcloud.json ./credentials/gcloud.json
 COPY ./credentials/prodUsers.json ./credentials/prodUsers.json
 
 RUN npm install
 RUN npm run build
 
-ENV GOOGLE_APPLICATION_CREDENTIALS ./credentials/gcloud.json
-ENV DB_SECRET_NAME production-psql
+# ENV GOOGLE_APPLICATION_CREDENTIALS ./credentials/gcloud.json
+# ENV DB_SECRET_NAME production-psql
 
 ENTRYPOINT ["node", "./build/seed/addUsers.js"]

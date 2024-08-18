@@ -74,6 +74,20 @@ Secret Manager (GCP)
 ### Deploy
 `kubectl apply -f ./smithers-crawler/smithers-cron.yaml`
 
+## Seed production users
+Ensure that `./add-users/credentials/prodUsers.json` is populated with the appropriate credentials (`{username: string, password: string, lockout: boolean}[]`).
+Additionally, you must have the following APIs enabled for the following hardware environments:
+Secret Manager (GCP)
+
+### Builds
+`./add-users/build.sh`
+
+### Push
+`docker push registry.smithers.private/add-users:XX`
+
+### Deploy
+`kubectl apply -f ./add-users/add-users-job.yaml`
+
 ## Deploy Ingress, Ingress Controller (gcp)
 ### Controller
 * Download yaml from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml (ingress/controller.yaml)
@@ -142,3 +156,9 @@ Now we'll build and deploy 3 kinds of clients to use with our backend:
 * iOS - via unlisted public apps (TBC)
 
 ### Android
+* In `smithers-expo` project, run `npm run build`. This will generate the native android project in the `smithers-expo/android` folder.
+* Run Android Studio
+* Open the `smithers-expo/android` project. It will take a while for android studio to build your project.
+
+https://developer.android.com/studio/publish/preparing
+

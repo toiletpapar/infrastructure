@@ -7,14 +7,20 @@ spec:
     spec:
       containers:
       - name: add-users-pod
-        image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/add-users:1.9
-        # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/add-users:test
+        # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/add-users:1.9
+        image: registry.smithers.private/add-users:1.9
+        env:
+          - name: DATABASE_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: production-psql
+                key: production-psql
         resources:
           limits:
-            cpu: "100m"
-            memory: "100Mi"
+            cpu: "200m"
+            memory: "200Mi"
           requests:
-            cpu: "100m"
-            memory: "100Mi"
+            cpu: "200m"
+            memory: "200Mi"
       restartPolicy: Never
       
