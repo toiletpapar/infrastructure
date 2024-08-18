@@ -159,6 +159,11 @@ Now we'll build and deploy 3 kinds of clients to use with our backend:
 * In `smithers-expo` project, run `npm run build`. This will generate the native android project in the `smithers-expo/android` folder.
 * Run Android Studio
 * Open the `smithers-expo/android` project. It will take a while for android studio to build your project.
+* Navigate to Build > Build Variants
+* From the Build Variants menu, select "Release" for "app"
+* Navigate to Build > Build App Bundles/APK(s) > Build APK
+* Distribute your code (via "forgotten" USB sticks, phishing emails, Google Drive)
 
+Note: It may prompt you to sign your APK. You can find instructions for that as well as other general information about publishing here:
 https://developer.android.com/studio/publish/preparing
 
