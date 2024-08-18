@@ -4,9 +4,11 @@ The following secrets are used in this project:
 * production-session-key - The secret used to sign session tokens
 
 ### GCP
-Read `docs/gcloud/a01-gke.md` for details on managing secrets with gcp secret manager
+Read `docs/gcloud/a01-gke.md` for details on managing secrets with gcp secret manager. This repo used to assume the code asked for secrets directly from GCP. This is no longer the case; secrets are now exposed as ENV variables.
 
 ### Baremetal
+Secrets are created and managed in k8s and are exposed as ENV variables in the deployments.
+
 Create the following folders under the `secrets/baremetal` directory:
 * `credentials` - This will house all your secrets in lieu of an external secret manager. Store as `filename=name of secret` and `
 * `k8s` - This will be where your secret files will live
@@ -47,19 +49,36 @@ Ensure that `./smithers-server/credentials` is populated with the appropriate cr
 Vision (GCP/baremetal)
 Secret Manager (GCP)
 
+### Build
+`./smithers-server/build.sh`
+
+### Push
+`docker push registry.smithers.private/smithers-server:XX`
+
+### Deploy
 `kubectl apply -f ./smithers-server/smithers-deployment.yaml`
-`kubectl apply -f ./smithers-server/smithers-service.yaml`
+`kubectl apply -f ./smithers-server/smithers-service.yaml`  
+
+Note: If you're running on cloud, check out the ingress section. The service is currently configured for baremetal and running a load balancer.
 
 ## Deploy crawler
 Ensure that `./smithers-server/credentials` is populated with the appropriate credentials for gcloud. You must have the following APIs enabled for the following hardware environments:
 Secret Manager (GCP)
 
+### Build
+`./smithers-crawler/build.sh`
+
+### Push
+`docker push registry.smithers.private/smithers-crawler:XX`
+
+### Deploy
 `kubectl apply -f ./smithers-crawler/smithers-cron.yaml`
 
-## Deploy Ingress, Ingress Controller
+## Deploy Ingress, Ingress Controller (gcp)
 ### Controller
 * Download yaml from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml (ingress/controller.yaml)
 
+#### NGINX controller and supporting infrastructure (e.g. ingress classes)
 `kubectl apply -f ./ingress/controller.yaml`
 
 https://kubernetes.github.io/ingress-nginx/deploy/#environment-specific-instructions
@@ -70,17 +89,16 @@ If you're running on a cloud provider, follow the below steps to ensure your loa
 * Patch k8s with static IP
 `kubectl patch svc ingress-nginx-controller --namespace ingress-nginx -p '{"spec": {"loadBalancerIP": "xxx.xxx.xxx.xx"}}'`
 
-If you're running baremetal, then you'll likely have configured `metallb` and a DNS through this project for a private network. Therefore, your static ip can be found at `docs/baremetal/metallb/ip-address-pool.yaml` and your DNS will be configured to serve resolve that ip for `api.smithers.private`.
+~~If you're running baremetal, then you'll likely have configured `metallb` and a DNS through this project for a private network. Therefore, your static ip can be found at `docs/baremetal/metallb/ip-address-pool.yaml` and your DNS will be configured to serve resolve that ip for `api.smithers.private`.~~
 
 https://kubernetes.github.io/ingress-nginx/examples/static-ip/
 
 ### Ingress
 `kubectl apply -f ./ingress/ingress.yaml`
 
-https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
+~~Warning: Baremetal clusters are currently configured to operate only on private networks therefore TLS is not enabled. To enable TLS, for cloud deployments, see "Install cert-manager" which uses `cert-manager` and `lets-encrypt` to handle automatic certificate management. You'll also need to adjust `ingress.yaml` as required.~~
 
-If you're using `cert-manager` and `lets-encrypt` for certificate management, go to `Install cert-manager` section.
-If you're using managing certificates manually, go to `Install certificate`
+https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
 
 ## Install cert-manager (gcp)
 https://cert-manager.io/docs/installation/
@@ -115,5 +133,12 @@ https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
 * At this point, if you've updated your ingress with `metadata.annotations.cert-manager.io/issuer: "letsencrypt-prod"`, removing the secret will retrigger reissuing of the certificate by cert-manager
 `kubectl delete secret tls-secret`
 
-## Install certificate (baremetal)
-TBD
+## Build the client and deploy
+At this point, all server infrastructure should be working. If you've been following this tutorial for baremetals clusters, `GET api.smithers.private` should return a 401 from any computer on the private network. On cloud infrastructure, it'd be `GET api.<your domain>.<tld>`.
+
+Now we'll build and deploy 3 kinds of clients to use with our backend:
+* Android - via sideloading
+* Web - by setting up a static website on the k8s cluster (TBC)
+* iOS - via unlisted public apps (TBC)
+
+### Android

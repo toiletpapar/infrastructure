@@ -16,9 +16,21 @@ spec:
     spec:
       containers:
       - name: smithers-server
-        image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-server:1.20
+        # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-server:1.20
+        image: registry.smithers.private/smithers-server:1.20
         ports:
         - containerPort: 8080
+        env:
+          - name: DATABASE_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: production-psql
+                key: production-psql
+          - name: SESSION_KEY
+            valueFrom:
+              secretKeyRef:
+                name: production-session-key
+                key: production-session-key
         resources:
           limits:
             cpu: "250m"

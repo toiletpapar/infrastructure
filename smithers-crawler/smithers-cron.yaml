@@ -11,8 +11,15 @@ spec:
         spec:
           containers:
           - name: smithers-crawler-pod
-            image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-crawler:1.8
+            image: registry.smithers.private/smithers-crawler:1.8
+            # image: us-east1-docker.pkg.dev/budget-server-370523/docker-smithers/smithers-crawler:1.8
             imagePullPolicy: IfNotPresent
+            env:
+              - name: DATABASE_CONNECTION_STRING
+                valueFrom:
+                  secretKeyRef:
+                    name: production-psql
+                    key: production-psql
             resources:
               limits:
                 cpu: "50m"
