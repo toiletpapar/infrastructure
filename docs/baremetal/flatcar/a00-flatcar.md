@@ -16,6 +16,7 @@ You need to create a Butane config that will
 * run k8s (control plane, nodes) - https://www.flatcar.org/docs/latest/container-runtimes/getting-started-with-kubernetes/
 * allow power saving when idle - https://www.flatcar.org/docs/latest/setup/customization/power-management/
 * (Required for `metallb` running in L2 mode) modify iptables to open port 7946 using systemd units - https://www.flatcar.org/docs/latest/provisioning/config-transpiler/examples/#systemd-units
+* (Required for `ingress-nginx` webhook admission) modify iptables to open port 8443 using systemd units - https://www.flatcar.org/docs/latest/provisioning/config-transpiler/examples/#systemd-units
 
 #### Configure a wired network
 Find your network interface
@@ -155,6 +156,27 @@ systemd:
         Type=oneshot
         ExecStart=/sbin/iptables -I INPUT -p tcp --dport 7946 -j ACCEPT
         ExecStart=/sbin/iptables -I OUTPUT -p tcp --sport 7946 -j ACCEPT
+
+        [Install]
+        WantedBy=multi-user.target    
+```
+
+This step is required to allow the ingress-nginx admissions webhook to communicate between nodes. See https://kubernetes.github.io/ingress-nginx/deploy/#firewall-configuration
+```
+variant: flatcar
+version: 1.0.0
+systemd:
+  units:
+    - name: openport-ingress-nginx.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Open port 8443 for ingress-nginx admission controller.
+
+        [Service]
+        Type=oneshot
+        ExecStart=/sbin/iptables -I INPUT -p tcp --dport 8443 -j ACCEPT
+        ExecStart=/sbin/iptables -I OUTPUT -p tcp --sport 8443 -j ACCEPT
 
         [Install]
         WantedBy=multi-user.target    

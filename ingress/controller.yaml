@@ -344,7 +344,6 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
-  loadBalancerIP: 104.196.183.94
   externalTrafficPolicy: Local
   ipFamilies:
   - IPv4
@@ -479,11 +478,11 @@ spec:
           timeoutSeconds: 1
         resources:
           limits:
-            cpu: "62m"
-            memory: "100Mi"
+            cpu: "100m"
+            memory: "200Mi"
           requests:
-            cpu: "62m"
-            memory: "100Mi"
+            cpu: "100m"
+            memory: "200Mi"
         securityContext:
           allowPrivilegeEscalation: true
           capabilities:

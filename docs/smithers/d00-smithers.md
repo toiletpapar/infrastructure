@@ -88,7 +88,7 @@ Secret Manager (GCP)
 ### Deploy
 `kubectl apply -f ./add-users/add-users-job.yaml`
 
-## Deploy Ingress, Ingress Controller (gcp)
+## Deploy Ingress, Ingress Controller
 ### Controller
 * Download yaml from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml (ingress/controller.yaml)
 
@@ -103,14 +103,14 @@ If you're running on a cloud provider, follow the below steps to ensure your loa
 * Patch k8s with static IP
 `kubectl patch svc ingress-nginx-controller --namespace ingress-nginx -p '{"spec": {"loadBalancerIP": "xxx.xxx.xxx.xx"}}'`
 
-~~If you're running baremetal, then you'll likely have configured `metallb` and a DNS through this project for a private network. Therefore, your static ip can be found at `docs/baremetal/metallb/ip-address-pool.yaml` and your DNS will be configured to serve resolve that ip for `api.smithers.private`.~~
-
 https://kubernetes.github.io/ingress-nginx/examples/static-ip/
+
+If you're running baremetal, then you'll likely have configured `metallb` and a DNS through this project for a private network. Therefore, your static ip can be found at `docs/baremetal/metallb/ip-address-pool.yaml` and your DNS will be configured to serve resolve that ip for `api.smithers.private` and (TBD).
 
 ### Ingress
 `kubectl apply -f ./ingress/ingress.yaml`
 
-~~Warning: Baremetal clusters are currently configured to operate only on private networks therefore TLS is not enabled. To enable TLS, for cloud deployments, see "Install cert-manager" which uses `cert-manager` and `lets-encrypt` to handle automatic certificate management. You'll also need to adjust `ingress.yaml` as required.~~
+Warning: Baremetal clusters are currently configured to operate only on private networks therefore TLS is not enabled. To enable TLS, for cloud deployments, see "Install cert-manager" which uses `cert-manager` and `lets-encrypt` to handle automatic certificate management. You'll also need to adjust `ingress.yaml` as required.
 
 https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
 
@@ -166,4 +166,9 @@ Now we'll build and deploy 3 kinds of clients to use with our backend:
 
 Note: It may prompt you to sign your APK. You can find instructions for that as well as other general information about publishing here:
 https://developer.android.com/studio/publish/preparing
+
+~~Note 2: You may need to configure your android phone to be able to talk to your private network DNS server that was configured if you were following the baremetal instructions. To do so:~~
+* ~~go to Settings > Network and Internet Settings > Private DNS > Off~~
+* ~~In your router, setup a port forwarding rule for port 53 to your local DNS ip address~~
+
 

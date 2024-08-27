@@ -110,4 +110,17 @@ systemd:
         ExecStart=/sbin/iptables -I OUTPUT -p tcp --sport 7946 -j ACCEPT
 
         [Install]
-        WantedBy=multi-user.target  
+        WantedBy=multi-user.target
+    - name: openport-ingress-nginx.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Open port 8443 for ingress-nginx admission controller.
+
+        [Service]
+        Type=oneshot
+        ExecStart=/sbin/iptables -I INPUT -p tcp --dport 8443 -j ACCEPT
+        ExecStart=/sbin/iptables -I OUTPUT -p tcp --sport 8443 -j ACCEPT
+
+        [Install]
+        WantedBy=multi-user.target    
