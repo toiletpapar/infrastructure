@@ -40,3 +40,6 @@ Verify that local-volume-provisioner and pvs were created successfully
 `kubectl get pv`
 
 Additionally, ensure that the drive is empty. You'll likely find a `lost+found` you'll need to deal with after doing a fresh install of flatcar.
+
+# Draining Nodes/Unschedulable Nodes
+Use `kubectl cordon <NODE>` and `kubectl uncordon <NODE>` to mark the node as schedulable/unscheduable. This is useful if you're looking to drain the node (i.e. gracefully remove a node from service by rescheduling node resources on other nodes and preventing new nodes from being scheduled).

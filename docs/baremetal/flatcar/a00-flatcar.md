@@ -284,6 +284,19 @@ sudo flatcar-install -d /dev/sda -i ignition-<control|node>.json -C stable
 At this point flatcar should be bootable from the host's disk. It is now safe to reboot the host and remove the boot drive.
 The node should also be reachable via SSH
 
+### (Optional) Ignore the lid switch event
+This optional steps allows the laptop to continue running when the lid is closed
+```
+vi /etc/systemd/logind.conf
+```
+
+Add the following lines:
+```
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+```
+
 ### Allow node reboots for updates
 * Allow for node reboots on Kubernetes or Flatcar update (via Kured)
 ```

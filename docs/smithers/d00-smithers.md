@@ -88,6 +88,17 @@ Secret Manager (GCP)
 ### Deploy
 `kubectl apply -f ./add-users/add-users-job.yaml`
 
+## Deploy web client
+### Build
+`./smithers-web/build.sh`
+
+### Push
+`docker push registry.smithers.private/smithers-web:XX`
+
+### Deploy
+`kubectl apply -f ./smithers-web/smithers-web-deployment.yaml`
+`kubectl apply -f ./smithers-web/smithers-web-service.yaml`  
+
 ## Deploy Ingress, Ingress Controller
 ### Controller
 * Download yaml from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml (ingress/controller.yaml)

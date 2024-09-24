@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smithers-web-deployment
+  labels:
+    app: smithers-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smithers-web
+  template:
+    metadata:
+      labels:
+        app: smithers-web
+    spec:
+      containers:
+      - name: smithers-web
+        image: registry.smithers.private/smithers-web:1.10
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "50m"
+            memory: "100Mi"
+          requests:
+            cpu: "50m"
+            memory: "100Mi"

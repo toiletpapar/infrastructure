@@ -84,3 +84,6 @@ sudo service bind9 restart
 
 ## Modify Router to use your DNS server
 This is normally done through your router's settings (GUI)
+
+# If you need to make changes to the DNS server
+The zones are found in `/etc/bind`. They can be edited in place (e.g. via `nano`) and picked up by the server via `sudo rndc reload`
