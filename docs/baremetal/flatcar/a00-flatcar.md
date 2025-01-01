@@ -6,6 +6,7 @@
 * Burn the image into a drive (possibly using Raspberry Pi Imager)
 * Boot the image via BIOS compatibility mode (not UEFI)
   - https://www.asus.com/us/support/FAQ/1013017/#A1 for ASUS Laptop (sustain press F2 for BIOS)
+  - Enter the [Save & Exit] screen, select the USB flash drive or CD-ROM in Boot Override you wish to boot from, then press the Enter key to boot from the selected USB or CD-ROM. 
 
 At this point, you should be in Flatcar Linux and should be able to run commands
 
