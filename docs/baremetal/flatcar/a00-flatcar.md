@@ -40,7 +40,6 @@ storage:
           Name=<<your network interface>>
 
           [Network]
-          DNS=<<your DNS ip address>>
           DHCP=yes
 ```
 

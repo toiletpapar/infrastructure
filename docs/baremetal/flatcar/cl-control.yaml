@@ -82,7 +82,7 @@ systemd:
 
         [Service]
         Type=oneshot
-        ExecStart=hostnamectl set-hostname asuslaptop
+        ExecStart=hostnamectl set-hostname k8s.smithers.private
 
         [Install]
         WantedBy=multi-user.target  
