@@ -41,8 +41,9 @@ storage:
           Name=enp4s0f1
 
           [Network]
-          DNS=192.168.0.41
-          DHCP=yes
+          Address=192.168.0.41/24
+          Gateway=192.168.0.1
+          DNS=192.168.0.32
     - path: /etc/sysupdate.kubernetes.d/kubernetes.conf
       contents:
         source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes.conf
