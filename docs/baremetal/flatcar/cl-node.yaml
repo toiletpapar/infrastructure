@@ -8,7 +8,7 @@ passwd:
         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfLCF7EB18ABUPNFmPRhmzmQ5Aa63JXHf8wBxGx1xl8edo92PclEV3dG6KJNuCe0z0j6dliPqxVKpdtPrgEYoyo+MfVnrON7wZRxq/9Gw9IJXRfx8ap8VX/VqLGLIoKsVMuj2j5Bz4JyjDm8ji09oCfyn4J1iCA10Iq4S7raX3T8ennGOx8C58ahzDhuc2qQKW7PFx7Cs/Fr+DKcaOaCSa4zxJyEbcyf1aSGLtzvcujSjoyuYoKIlcU74YVQlbkHHZ5BWreSx9PKQBB7/HXxV0KVle6TniGpPOYjWdvTav8F/kPDuhSESvDV7NdEjYnlNdpRC4HZ2VKwVhWDwuNJpz
 storage:
   links:
-    - target: /opt/extensions/kubernetes/kubernetes-v1.32.0-x86-64.raw
+    - target: /opt/extensions/kubernetes/kubernetes-v1.27.4-x86-64.raw
       path: /etc/extensions/kubernetes.raw
       hard: false
   files:
@@ -22,15 +22,15 @@ storage:
           Address=192.168.0.41/24
           Gateway=192.168.0.1
           DNS=192.168.0.32
-    - path: /etc/sysupdate.kubernetes.d/kubernetes-v1.32.conf 
+    - path: /etc/sysupdate.kubernetes.d/kubernetes-v1.27.conf 
       contents:
-        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes-v1.32.conf 
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes-v1.27.conf 
     - path: /etc/sysupdate.d/noop.conf
       contents:
         source: https://github.com/flatcar/sysext-bakery/releases/download/latest/noop.conf
-    - path: /opt/extensions/kubernetes/kubernetes-v1.32.0-x86-64.raw 
+    - path: /opt/extensions/kubernetes/kubernetes-v1.27.4-x86-64.raw
       contents:
-        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes-v1.32.0-x86-64.raw 
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/kubernetes-v1.27.4-x86-64.raw
     - path: /etc/ssh/sshd_config
       overwrite: true
       mode: 0600
