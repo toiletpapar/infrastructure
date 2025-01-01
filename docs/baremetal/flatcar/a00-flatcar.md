@@ -204,7 +204,7 @@ systemd:
         WantedBy=multi-user.target  
 ```
 
-Ensure each node has a unique name to reduce conflict when using local storage and for assisting in troubleshooting. If you've already setup your DNS server specified in `pi/b01-pi-dns.md`, this should be the hostname used to identify your k8s server and can be found in your zone files. In this project, this is `k8s.smithers.private`.
+Ensure each node has a unique name to reduce conflict when using local storage and for assisting in troubleshooting. If you've already setup your DNS server specified in `pi/b01-pi-dns.md`, this should be the hostname used to identify your k8s server and can be found in your zone files. In this project, the control plane is `k8s.smithers.private`.
 
 #### (Optional) Partition your drive
 https://coreos.github.io/butane/config-flatcar-v1_0/
