@@ -100,6 +100,7 @@ systemd:
         Requires=containerd.service
         After=containerd.service
         [Service]
+        TimeoutStartSec=300
         ExecStart=/usr/bin/kubeadm join $(output from 'kubeadm token create --print-join-command')
         [Install]
         WantedBy=multi-user.target

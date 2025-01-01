@@ -123,6 +123,7 @@ systemd:
         After=containerd.service
         ConditionPathExists=!/etc/kubernetes/kubelet.conf
         [Service]
+        TimeoutStartSec=300
         ExecStartPre=/usr/bin/kubeadm init
         ExecStartPre=/usr/bin/mkdir /home/core/.kube
         ExecStartPre=/usr/bin/cp /etc/kubernetes/admin.conf /home/core/.kube/config
