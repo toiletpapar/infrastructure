@@ -87,8 +87,17 @@ At this point, you should be able to deploy load balancer services. For addition
 
 ## Testing
 * Run an nginx deployment
+`kubectl apply -f docs/baremetal/metallb/test/deployment.yaml`
 * Create and run a ClusterIP service to match the nginx deployment
+`kubectl apply -f docs/baremetal/metallb/test/service.yaml`
 * Port forward to ensure you can access the nginx deployment
+`kubectl port-forward service/nginx-service 8080:80`
+* Open a browser at `localhost:8080` and ensure you see the nginx welcome page
 * Modify the service to type load balancer
-* Describe the service to find the assigned ip address
+`kubectl patch service nginx-service -p '{"spec":{"type":"LoadBalancer"}}'`
+* Describe the service to find the assigned ip address (LoadBalancer Ingress)
+`kubectl describe service nginx-service`
 * You should be able to find the nginx welcome page through the load balancer
+* Clean up
+`kubectl delete -f docs/baremetal/metallb/test/deployment.yaml`
+`kubectl delete service nginx-service`
