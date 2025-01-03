@@ -304,7 +304,7 @@ latest=$(curl -s https://api.github.com/repos/kubereboot/kured/releases | jq -r 
 kubectl apply -f "https://github.com/kubereboot/kured/releases/download/$latest/kured-$latest-dockerhub.yaml"
 ```
 
-At this point, the k8s control plane should be in the "Ready" state. You can verify this by running `kubectl get nodes`
+At this point, the k8s control plane should be in the "Ready" state if a CNI has been deployed (See `flatcar/a01-kubeadm.md` for more info). You can verify this by running `kubectl get nodes`
 
 ### Modify the control plane to allow for authorized access to Artifact Repository (gcp)
 If you use GCP Artifcat Repository for your images, see https://www.flatcar.org/docs/latest/container-runtimes/registry-authentication/
